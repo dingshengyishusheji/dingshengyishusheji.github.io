@@ -1,0 +1,257 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品详情</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}
+        body{background:#f8f9fa;padding-bottom:40px}
+        
+        /* 编辑条 - 永久隐藏 */
+        .edit-bar{
+            position:fixed;top:0;left:0;width:100%;
+            background:#ffc107;color:#000;padding:6px 0;
+            text-align:center;font-size:14px;z-index:9999;
+            display:none !important; /* 强制隐藏 */
+        }
+        
+        .header{
+            background:#fff;padding:15px 20px;border-bottom:1px solid #eee;margin-top:30px;
+        }
+        .header-inner{
+            max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
+        }
+        .back{color:#0066cc;cursor:pointer;font-size:16px}
+        /* 导出按钮 - 永久隐藏 */
+        .export-btn{
+            background:#0066cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;
+            display:none !important; /* 强制隐藏 */
+        }
+        
+        .container{max-width:1000px;margin:0 auto;padding:20px;text-align:center}
+        .title{font-size:26px;margin-bottom:8px;outline:none !important;cursor:default !important}
+        .desc{font-size:16px;color:#666;margin-bottom:20px;outline:none !important;cursor:default !important}
+        
+        .carousel{position:relative;width:100%;margin-bottom:20px}
+        .slide{display:none}
+        .slide.active{display:block}
+        .slide img{width:100%;border-radius:8px}
+        .arrow{
+            position:absolute;top:50%;transform:translateY(-50%);
+            background:rgba(0,0,0,0.5);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;
+        }
+        .prev{left:15px}
+        .next{right:15px}
+        
+        .thumbs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+        .thumb{width:70px;height:70px;object-fit:cover;border-radius:4px;cursor:pointer;border:2px solid transparent}
+        .thumb.active{border-color:#0066cc}
+        
+        .editable{outline:none !important;background-color:transparent !important}
+    </style>
+<style type="text/css">.qa-sdk-wrapper {
+  position: fixed;
+  width: 400px;
+  right: -600px;
+  max-height: 530px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease-in-out;
+  background: #fff;
+}
+
+.qa-sdk-close-btn {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.qa-sdk-close-btn:hover {
+  border-radius: 50%;
+  background-color: #d5d9df;
+}
+
+#qa-sdk-iframe {
+  width: 400px;
+}
+
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .qa-sdk-wrapper{
+    width: 356px;
+  }
+  #qa-sdk-iframe {
+    width: 356px;
+  }
+}
+</style><style id="ai-assist-webType-style">
+    .ai-assist-highlight {
+      background: yellow;
+    }
+    @media print {
+      #ai-assist-root-bangs,
+      #ai-assist-root-bilibili,
+      #ai-assist-root-new {
+        display: none !important;
+      }
+    }
+  </style></head>
+
+<body>
+
+<div class="edit-bar" id="editBar">编辑中：双击空白退出并自动保存</div>
+
+<div class="header">
+    <div class="header-inner">
+        <div>杭州鼎笙艺术设计</div>
+        <div style="display:flex;gap:12px;align-items:center">
+            <div class="back" id="backBtn">← 返回</div>
+            <button class="export-btn" id="saveBtn">导出并替换原文件</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1 class="title editable" id="workTitle">品牌logo及应用</h1>
+    <p class="desc editable" id="workDesc">法国黑公鸡红酒</p>
+
+    <div class="carousel" id="carousel">
+        <div id="slides"><div class="slide active"><img src="images/品牌设计类/brand3-1.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-2.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-3.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-4.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-5.jpg"></div></div>
+        <button class="arrow prev" id="prevBtn">‹</button>
+        <button class="arrow next" id="nextBtn">›</button>
+    </div>
+
+    <div class="thumbs" id="thumbs"><img class="thumb active" src="images/品牌设计类/brand3-1.jpg" data-index="0"><img class="thumb" src="images/品牌设计类/brand3-2.jpg" data-index="1"><img class="thumb" src="images/品牌设计类/brand3-3.jpg" data-index="2"><img class="thumb" src="images/品牌设计类/brand3-4.jpg" data-index="3"><img class="thumb" src="images/品牌设计类/brand3-5.jpg" data-index="4"></div>
+</div>
+
+<script>
+// ==================== URL 参数 ====================
+const params = new URLSearchParams(location.search);
+const title = decodeURIComponent(params.get('title') || '作品标题');
+const prefix = decodeURIComponent(params.get('prefix') || '');
+const pageKey = "DETAIL_" + (prefix || "default");
+
+// ==================== 元素 ====================
+const titleEl = document.getElementById('workTitle');
+const descEl = document.getElementById('workDesc');
+const slidesEl = document.getElementById('slides');
+const thumbsEl = document.getElementById('thumbs');
+
+// ==================== 本地自动保存（保留读取，禁用保存） ====================
+function loadSave(){
+    const t = localStorage.getItem(pageKey+"_title");
+    const d = localStorage.getItem(pageKey+"_desc");
+    if(t) titleEl.innerText = t; else titleEl.innerText = title;
+    if(d) descEl.innerText = d;
+    // 强制设置为不可编辑
+    titleEl.contentEditable = false;
+    descEl.contentEditable = false;
+}
+function saveNow(){
+    // 禁用保存功能
+    return;
+    /* 保留代码
+    localStorage.setItem(pageKey+"_title", titleEl.innerText);
+    localStorage.setItem(pageKey+"_desc", descEl.innerText);
+    */
+}
+
+loadSave();
+// 禁用输入保存事件
+/*
+titleEl.addEventListener('input', saveNow);
+descEl.addEventListener('input', saveNow);
+*/
+
+// ==================== 加载轮播 ====================
+let curr = 0;
+let total = 0;
+
+async function loadImgs(){
+    slidesEl.innerHTML = "";
+    thumbsEl.innerHTML = "";
+    if(!prefix) return;
+    for(let i=1;i<=20;i++){
+        const src = prefix+"-"+i+".jpg";
+        const img = new Image();
+        img.src = src;
+        await new Promise(r=>{
+            img.onload=()=>{
+                const s = document.createElement("div");
+                s.className="slide";
+                s.innerHTML=`<img src="${src}">`;
+                slidesEl.appendChild(s);
+                
+                const t = document.createElement("img");
+                t.className="thumb";
+                t.src=src;
+                t.dataset.index = total;
+                thumbsEl.appendChild(t);
+                total++; r();
+            };
+            img.onerror=()=>r(0);
+        });
+    }
+    show(0);
+}
+
+function show(idx){
+    const slides = document.querySelectorAll('.slide');
+    const thumbs = document.querySelectorAll('.thumb');
+    if(total===0)return;
+    if(idx<0)idx=0; if(idx>=total)idx=total-1;
+    curr=idx;
+    slides.forEach((e,i)=>e.classList.toggle('active',i===idx));
+    thumbs.forEach((e,i)=>e.classList.toggle('active',i===idx));
+}
+
+document.getElementById('prevBtn').onclick=()=>show(curr-1);
+document.getElementById('nextBtn').onclick=()=>show(curr+1);
+thumbsEl.addEventListener('click',e=>{
+    if(e.target.classList.contains('thumb')) show(Number(e.target.dataset.index));
+});
+
+// ==================== 禁用双击编辑 ====================
+/*
+let edit=false;
+document.addEventListener('dblclick',()=>{
+    edit=!edit;
+    document.getElementById('editBar').classList.toggle('show',edit);
+    titleEl.contentEditable=edit;
+    descEl.contentEditable=edit;
+    if(!edit){saveNow();alert("✅ 已自动保存");}
+});
+*/
+
+// ==================== 返回 ====================
+document.getElementById('backBtn').onclick=()=>{
+    // 移除编辑模式判断，直接返回
+    let to="#category-brand";
+    if(prefix.includes("包装"))to="#category-package";
+    if(prefix.includes("空间"))to="#category-space";
+    if(prefix.includes("平面"))to="#category-print";
+    location.href="index.html"+to;
+};
+
+// ==================== 导出并替换原文件（禁用） ====================
+document.getElementById('saveBtn').onclick=()=>{
+    alert('上线版本已禁用导出功能');
+    return;
+    /* 保留代码
+    saveNow();
+    const blob = new Blob([document.documentElement.outerHTML],{type:'text/html;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download="detail.html";
+    a.click();
+    alert("✅ 导出成功！覆盖本地文件即可永久保存！");
+    */
+};
+
+loadImgs();
+</script>
+
+<div id="agent"></div></body><div id="ai-assist-root-bangs"></div><div id="shadow-root-ai-zhishiku"></div><div id="ai-assist-root-new"></div></html>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杭州鼎笙艺术设计 | 陈志坚 独立设计师</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 编辑模式提示条 - 永久隐藏 */
+        .edit-mode-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffc107;
+            color: #000;
+            text-align: center;
+            padding: 8px;
+            font-size: 14px;
+            z-index: 9999;
+            display: none !important; /* 强制隐藏 */
+        }
+
+        /* 导出按钮 - 永久隐藏 */
+        .export-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 9998;
+            display: none !important; /* 强制隐藏 */
+        }
+
+        /* 可编辑元素样式 - 移除编辑相关交互 */
+        .editable {
+            transition: all 0.2s ease;
+            cursor: default !important; /* 移除文本光标 */
+            position: relative;
+            z-index: 10;
+            outline: none !important; /* 移除轮廓 */
+            background-color: transparent !important; /* 移除编辑背景 */
+        }
+        .editable:hover {
+            outline: none !important; /* 移除hover虚线 */
+        }
+        .editable:focus {
+            outline: none !important; /* 移除focus实线 */
+            background-color: transparent !important;
+        }
+
+        /* 导航栏 */
+        nav {
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        /* Banner自动轮播样式 */
+        .banner {
+            position: relative;
+            min-height: 334px;
+            padding: 100px 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .banner-slides {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #fff;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .banner-slide.active {
+            opacity: 1;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Banner主标题 */
+        .banner h1 {
+            font-size: 48px;
+            margin-bottom: 24px;
+            color: #222;
+            font-weight: 600;
+            text-shadow: 
+                0 0 10px #fff,
+                0 0 10px #fff,
+                0 0 10px #fff,
+                0 0 10px #fff,
+                0 0 10px #fff;
+        }
+
+        /* Banner副标题 */
+        .banner p {
+            font-size: 20px;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 
+                0 0 8px #fff,
+                0 0 16px #fff,
+                0 0 24px rgba(255,255,255,0.95),
+                0 0 32px rgba(255,255,255,0.9);
+        }
+
+        /* 分类导航区域 */
+        .category-nav {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+            scroll-margin-top: 80px;
+        }
+        .category-nav a.editable {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .category-nav a.editable:hover {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        /* 作品展示区 */
+        .section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        /* 类目标题 */
+        .category-title {
+            font-size: 24px;
+            margin: 60px 0 32px;
+            color: #333;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+            scroll-margin-top: 80px;
+        }
+
+        /* 作品瀑布流网格 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .work-card {
+            background-color: transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .work-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        /* 作品卡片图片 */
+        .work-img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .work-img.loaded {
+            opacity: 1;
+        }
+
+        /* 作品文字区 */
+        .work-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px 12px;
+            background-color: transparent;
+            pointer-events: none;
+        }
+
+        /* 编辑模式下，文字区域可点击 - 上线后无效 */
+        .edit-mode-active .work-info {
+            pointer-events: auto !important;
+        }
+
+        /* 作品描述 */
+        .work-desc {
+            font-size: 11.8px;
+            font-weight: normal;
+            color: #999999;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* 关于我 */
+        .about-section {
+            background-color: #fff;
+            padding: 80px 20px;
+            margin-top: 80px;
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-container h2 {
+            font-size: 32px;
+            margin-bottom: 32px;
+            color: #222;
+            font-weight: 600;
+        }
+
+        .about-text {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            white-space: pre-line;
+        }
+
+        /* 联系栏 */
+        .contact-box {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 32px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .contact-item {
+            font-size: 16px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 32px 20px;
+            margin-top: 80px;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* 手机端响应式 */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 20px;
+            }
+            .banner h1 {
+                font-size: 32px;
+            }
+            .banner p {
+                font-size: 16px;
+            }
+            .works-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+            .work-img {
+                height: 145px;
+            }
+            .work-desc {
+                font-size: 10.1px;
+            }
+            .contact-box {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .category-nav {
+                gap: 30px;
+            }
+            .category-nav a.editable {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 编辑模式提示条 -->
+    <div class="edit-mode-bar" id="editModeBar">
+        ✏️ 编辑模式已开启 | 点击文字直接修改 | 双击空白处退出并自动保存
+    </div>
+
+    <!-- 导出按钮 -->
+    <button class="export-btn" id="exportBtn" onclick="exportWebsite()">📥 导出并替换原文件</button>
+
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo editable" data-key="logo">杭州鼎笙艺术设计</a>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#works">作品</a>
+                <a href="#about">关于我</a>
+                <a href="#contact">联系我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner自动轮播 -->
+    <section id="home" class="banner">
+        <div class="banner-slides">
+            <div class="banner-slide active" style="background-image: url('images/banner.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-1.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-2.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-3.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-4.jpg')"></div>
+        </div>
+        <div class="banner-content">
+            <h1 class="editable" data-key="banner-title">鼎承匠心 · 笙绘美好</h1>
+            <p class="editable" data-key="banner-subtitle">鼎承匠心 · 笙绘美好 | 专注品牌全案 / 空间展厅 / 包装设计</p>
+        </div>
+    </section>
+
+    <!-- 作品展示区 -->
+    <section id="works" class="section">
+        <div id="category-nav-section" class="category-nav">
+            <a class="editable" data-key="nav-package" data-target="#category-package">包装设计类</a>
+            <a class="editable" data-key="nav-space" data-target="#category-space">空间设计类</a>
+            <a class="editable" data-key="nav-brand" data-target="#category-brand">品牌设计类</a>
+            <a class="editable" data-key="nav-print" data-target="#category-print">平面设计类</a>
+        </div>
+
+        <!-- 1. 品牌/LOGO/VI设计 -->
+        <h3 id="category-brand" class="category-title editable" data-key="category-brand">品牌/LOGO/VI设计</h3>
+        <div class="works-grid" id="brand-works-grid"></div>
+
+        <!-- 2. 空间/展厅设计 -->
+        <h3 id="category-space" class="category-title editable" data-key="category-space">空间/展厅设计</h3>
+        <div class="works-grid" id="space-works-grid"></div>
+
+        <!-- 3. 包装/礼盒设计 -->
+        <h3 id="category-package" class="category-title editable" data-key="category-package">包装/礼盒设计</h3>
+        <div class="works-grid" id="package-works-grid"></div>
+
+        <!-- 4. 平面/广告设计 -->
+        <h3 id="category-print" class="category-title editable" data-key="category-print">平面/广告设计</h3>
+        <div class="works-grid" id="print-works-grid"></div>
+    </section>
+
+    <!-- 关于我+联系我 -->
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <h2 class="editable" data-key="about-title">关于我</h2>
+            <div class="about-text editable" data-key="about-text">20+年设计行业经验，专注商业空间与品牌视觉融合设计。
+擅长从品牌战略出发，打造兼具美学与商业价值的设计作品。
+服务过100+企业客户，涵盖品牌、空间、包装等多个领域。</div>
+
+            <div id="contact" class="contact-box">
+                <div class="contact-item editable" data-key="contact-phone">
+                    <span>📱</span>
+                    <span>微信/电话：186 0651 0351</span>
+                </div>
+                <div class="contact-item editable" data-key="contact-email">
+                    <span>📧</span>
+                    <span>邮箱：77887788@qq.com</span>
+                </div>
+                <div class="contact-item editable" data-key="contact-address">
+                    <span>📍</span>
+                    <span>地址：浙江杭州西湖区翠苑创立方B座507-2室</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p class="editable" data-key="footer">© 2026 杭州鼎笙艺术设计 版权所有</p>
+    </footer>
+
+    <script>
+        // ================== 1. Banner轮播优化 ==================
+        const slides = document.querySelectorAll('.banner-slide');
+        let currentSlide = 0;
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        const bannerContainer = document.querySelector('.banner');
+        let slideInterval = setInterval(nextSlide, 6000);
+        bannerContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        bannerContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 6000));
+
+        // ================== 2. 分类导航跳转 ==================
+        document.querySelectorAll('.category-nav a.editable').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                }
+            });
+        });
+
+        // ================== 3. 作品加载+懒加载（核心修复：给产品描述绑定保存逻辑） ==================
+        const workCategories = [
+            {
+                gridId: 'brand-works-grid',
+                folder: 'images/品牌设计类/',
+                prefix: 'brand',
+                titleTpl: '品牌全案设计{num}',
+                descTpl: '品牌全案设计',
+                captionsTpl: 'LOGO设计,VI应用,品牌手册'
+            },
+            {
+                gridId: 'space-works-grid',
+                folder: 'images/空间设计类/',
+                prefix: 'space',
+                titleTpl: '空间设计{num}',
+                descTpl: '商业空间设计',
+                captionsTpl: '展厅全景,展示区,洽谈区'
+            },
+            {
+                gridId: 'package-works-grid',
+                folder: 'images/包装设计类/',
+                prefix: 'package',
+                titleTpl: '包装设计{num}',
+                descTpl: '产品包装设计',
+                captionsTpl: '礼盒正面,打开效果,细节展示'
+            },
+            {
+                gridId: 'print-works-grid',
+                folder: 'images/平面设计类/',
+                prefix: 'print',
+                titleTpl: '平面设计{num}',
+                descTpl: '商业平面设计',
+                captionsTpl: '主视觉海报,系列海报,应用展示'
+            }
+        ];
+
+        // 图片存在性检测
+        function checkImageExists(src) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                const timer = setTimeout(() => resolve(false), 3000);
+                img.onload = () => {
+                    clearTimeout(timer);
+                    resolve(true);
+                };
+                img.onerror = () => {
+                    clearTimeout(timer);
+                    resolve(false);
+                };
+                img.src = src;
+            });
+        }
+
+        // 创建作品卡片（核心修复：给描述绑定data-key、实时保存、加载缓存）
+        async function createWorkCard(category, seriesNum) {
+            const seriesKey = `${category.prefix}${seriesNum}`;
+            const imgSrc = `${category.folder}${seriesKey}-1.jpg`;
+            const exists = await checkImageExists(imgSrc);
+            if (!exists) return null;
+
+            let title = category.titleTpl.replace('{num}', seriesNum);
+            let desc = category.descTpl.replace('{num}', seriesNum);
+            const captions = category.captionsTpl || '图片1,图片2,图片3';
+            const detailUrl = `detail.html?title=${encodeURIComponent(title)}&prefix=${encodeURIComponent(category.folder + seriesKey)}&captions=${encodeURIComponent(captions)}`;
+
+            const card = document.createElement('div');
+            card.className = 'work-card';
+
+            // 仅给图片绑定跳转
+            const img = document.createElement('img');
+            img.className = 'work-img lazy-load';
+            img.dataset.src = imgSrc;
+            img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+            img.dataset.detailUrl = detailUrl;
+            img.addEventListener('click', function(e) {
+                // 永久禁用编辑模式判断，直接允许跳转
+                e.preventDefault();
+                window.open(detailUrl, '_blank', 'noopener');
+            });
+
+            // 作品文字区（给描述绑定唯一data-key）
+            const info = document.createElement('div');
+            info.className = 'work-info';
+            const descEl = document.createElement('p');
+            descEl.className = 'work-desc editable';
+            // 给每个产品描述生成唯一的data-key，用于保存
+            descEl.setAttribute('data-key', `work-desc-${category.prefix}-${seriesNum}`);
+            descEl.textContent = desc;
+
+            // 加载本地保存的内容（页面加载时读取）
+            const savedDesc = localStorage.getItem(`work-desc-${category.prefix}-${seriesNum}`);
+            if (savedDesc) descEl.textContent = savedDesc;
+
+            info.appendChild(descEl);
+            card.appendChild(img);
+            card.appendChild(info);
+
+            return card;
+        }
+
+        // 分批加载作品
+        async function loadCategoryWorks(category) {
+            const grid = document.getElementById(category.gridId);
+            let loadedCount = 0;
+            for (let i = 1; i <= 50; i++) {
+                const card = await createWorkCard(category, i);
+                if (card) {
+                    grid.appendChild(card);
+                    loadedCount++;
+                }
+            }
+            loadVisibleImages();
+            console.log(`✅ ${category.gridId} 加载完成，共${loadedCount}个作品`);
+        }
+
+        // ================== 4. 懒加载核心修复 ==================
+        function loadVisibleImages() {
+            const lazyImages = document.querySelectorAll('.lazy-load:not(.loaded)');
+            if (lazyImages.length === 0) return;
+            
+            lazyImages.forEach(img => {
+                const rect = img.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight + 1000 && rect.bottom > -1000;
+                if (isVisible && !img.dataset.loading) {
+                    img.dataset.loading = 'true';
+                    img.src = img.dataset.src;
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                        delete img.dataset.loading;
+                    };
+                    img.onerror = () => {
+                        delete img.dataset.loading;
+                    };
+                }
+            });
+        }
+
+        // 节流函数
+        function throttle(fn, delay) {
+            let timer = null;
+            return function() {
+                if (!timer) {
+                    timer = setTimeout(() => {
+                        fn.apply(this, arguments);
+                        timer = null;
+                    }, delay);
+                }
+            };
+        }
+
+        // 初始化懒加载
+        const throttledLoad = throttle(loadVisibleImages, 80);
+        window.addEventListener('DOMContentLoaded', loadVisibleImages);
+        window.addEventListener('scroll', throttledLoad);
+        window.addEventListener('resize', throttledLoad);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) loadVisibleImages();
+        });
+        window.addEventListener('load', loadVisibleImages);
+
+        // ================== 5. 编辑+自动保存+导出（屏蔽编辑功能，保留代码） ==================
+        let isEditMode = false; // 强制保持关闭状态
+        const editModeBar = document.getElementById('editModeBar');
+        const exportBtn = document.getElementById('exportBtn');
+        
+        // 防抖函数
+        function debounce(fn, delay) {
+            let timer = null;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, arguments), delay);
+            };
+        }
+
+        // 实时保存编辑内容（通用方法，支持所有editable元素）
+        function saveEditableContent(el) {
+            const key = el.getAttribute('data-key');
+            if (key) {
+                localStorage.setItem(key, el.textContent.trim());
+                console.log(`💾 自动保存 [${key}]：${el.textContent.trim()}`);
+            }
+        }
+
+        // 禁用所有editable元素的编辑事件绑定
+        // 注释掉原有绑定逻辑，保留代码结构
+        /*
+        document.querySelectorAll('.editable').forEach(el => {
+            el.addEventListener('input', debounce(function() {
+                saveEditableContent(this);
+            }, 500));
+        });
+        */
+        
+        // 禁用双击空白处切换编辑模式
+        /*
+        document.addEventListener('dblclick', debounce(function(e) {
+            // 原有逻辑保留但注释，强制禁用
+        }, 200));
+        */
+
+        // 导出网站文件（保留代码但禁用触发）
+        function exportWebsite() {
+            // 禁用导出功能
+            alert('上线版本已禁用导出功能');
+            return;
+            /* 保留原有导出代码，注释掉
+            try {
+                document.querySelectorAll('.editable').forEach(el => saveEditableContent(el));
+                const cloneDoc = document.cloneNode(true);
+                cloneDoc.body.classList.remove('edit-mode-active');
+                const editBar = cloneDoc.getElementById('editModeBar');
+                if (editBar) editBar.classList.remove('show');
+                const expBtn = cloneDoc.getElementById('exportBtn');
+                if (expBtn) expBtn.classList.remove('show');
+                let htmlContent = '<!DOCTYPE html>\n' + cloneDoc.documentElement.outerHTML;
+                htmlContent = htmlContent.replace(/<!DOCTYPE html>\n<!DOCTYPE html>/i, '<!DOCTYPE html>');
+                const blob = new Blob([htmlContent], { 
+                    type: 'text/html;charset=utf-8' 
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; 
+                a.download = 'index.html';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 1000);
+                alert('✅ 导出成功！\n文件已准备好另存为，包含所有文字修改，保留全部原有功能');
+            } catch (err) {
+                alert(`❌ 导出失败：${err.message}`);
+                console.error('导出失败详情：', err);
+            }
+            */
+        }
+
+        // ================== 页面初始化（加载所有本地保存的内容） ==================
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 页面开始初始化...');
+            
+            // 加载本地保存的编辑内容（页面已有元素）
+            const editableElements = document.querySelectorAll('.editable');
+            editableElements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                const savedValue = localStorage.getItem(key);
+                if (savedValue) el.textContent = savedValue.trim();
+                // 强制设置为不可编辑
+                el.contentEditable = false;
+                el.setAttribute('spellcheck', 'false');
+            });
+            
+            // 并行加载作品（产品卡片）
+            const loadPromises = workCategories.map(category => loadCategoryWorks(category));
+            await Promise.all(loadPromises);
+            
+            // 兜底加载图片
+            loadVisibleImages();
+            console.log('✅ 页面初始化完成！所有产品描述已加载本地保存内容');
+        });
+
+        // 全局性能优化
+        document.addEventListener('dragstart', e => {
+            if (e.target.tagName === 'IMG') e.preventDefault();
+        });
+        document.body.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>
