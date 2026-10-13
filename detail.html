@@ -1,29 +1,17 @@
-<html lang="zh-CN"><head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品详情</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}
         body{background:#f8f9fa;padding-bottom:40px}
+        .edit-bar,.export-btn{display:none!important}
         
-        .edit-bar{
-            position:fixed;top:0;left:0;width:100%;
-            background:#ffc107;color:#000;padding:6px 0;
-            text-align:center;font-size:14px;z-index:9999;display:none !important;
-        }
-        .edit-bar.show{display:none !important;}
-        
-        .header{
-            background:#fff;padding:15px 20px;border-bottom:1px solid #eee;margin-top:30px;
-        }
-        .header-inner{
-            max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
-        }
+        .header{background:#fff;padding:15px 20px;border-bottom:1px solid #eee;margin-top:30px}
+        .header-inner{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
         .back{color:#0066cc;cursor:pointer;font-size:16px}
-        .export-btn{
-            background:#0066cc;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;
-            display:none !important; /* 永久隐藏导出按钮 */
-        }
         
         .container{max-width:1000px;margin:0 auto;padding:20px;text-align:center}
         .title{font-size:26px;margin-bottom:8px}
@@ -33,199 +21,169 @@
         .slide{display:none}
         .slide.active{display:block}
         .slide img{width:100%;border-radius:8px}
-        .arrow{
-            position:absolute;top:50%;transform:translateY(-50%);
-            background:rgba(0,0,0,0.5);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;
-        }
+        .arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10}
         .prev{left:15px}
         .next{right:15px}
         
         .thumbs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
         .thumb{width:70px;height:70px;object-fit:cover;border-radius:4px;cursor:pointer;border:2px solid transparent}
         .thumb.active{border-color:#0066cc}
-        
-        .editable{outline:none;contentEditable:false !important;cursor:default !important;}
     </style>
-<style type="text/css">.qa-sdk-wrapper {
-  position: fixed;
-  width: 400px;
-  right: -600px;
-  max-height: 530px;
-  overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
-  transition: all 0.5s ease-in-out;
-  background: #fff;
-}
-
-.qa-sdk-close-btn {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  position: absolute;
-  top: 16px;
-  right: 16px;
-}
-
-.qa-sdk-close-btn:hover {
-  border-radius: 50%;
-  background-color: #d5d9df;
-}
-
-#qa-sdk-iframe {
-  width: 400px;
-}
-
-@media (min-width: 1024px) and (max-width: 1366px) {
-  .qa-sdk-wrapper{
-    width: 356px;
-  }
-  #qa-sdk-iframe {
-    width: 356px;
-  }
-}
-</style><style id="ai-assist-webType-style">
-    .ai-assist-highlight {
-      background: yellow;
-    }
-    @media print {
-      #ai-assist-root-bangs,
-      #ai-assist-root-bilibili,
-      #ai-assist-root-new {
-        display: none !important;
-      }
-    }
-  </style></head>
-
+</head>
 <body>
-
-<div class="edit-bar" id="editBar">编辑中：双击空白退出并自动保存</div>
 
 <div class="header">
     <div class="header-inner">
-        <div>杭州鼎笙艺术设计</div>
-        <div style="display:flex;gap:12px;align-items:center">
-            <div class="back" id="backBtn">← 返回</div>
-            <button class="export-btn" id="saveBtn">导出并替换原文件</button>
-        </div>
+        <div>陈志坚设计工作室</div>
+        <div class="back" id="backBtn">← 返回</div>
     </div>
 </div>
 
 <div class="container">
-    <h1 class="title editable" id="workTitle">品牌logo及应用</h1>
-    <p class="desc editable" id="workDesc">法国黑公鸡红酒</p>
-
+    <h1 class="title" id="workTitle"></h1>
+    <p class="desc" id="workDesc"></p>
     <div class="carousel" id="carousel">
-        <div id="slides"><div class="slide active"><img src="images/品牌设计类/brand3-1.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-2.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-3.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-4.jpg"></div><div class="slide"><img src="images/品牌设计类/brand3-5.jpg"></div></div>
+        <div id="slides"></div>
         <button class="arrow prev" id="prevBtn">‹</button>
         <button class="arrow next" id="nextBtn">›</button>
     </div>
-
-    <div class="thumbs" id="thumbs"><img class="thumb active" src="images/品牌设计类/brand3-1.jpg" data-index="0"><img class="thumb" src="images/品牌设计类/brand3-2.jpg" data-index="1"><img class="thumb" src="images/品牌设计类/brand3-3.jpg" data-index="2"><img class="thumb" src="images/品牌设计类/brand3-4.jpg" data-index="3"><img class="thumb" src="images/品牌设计类/brand3-5.jpg" data-index="4"></div>
+    <div class="thumbs" id="thumbs"></div>
 </div>
 
 <script>
-// ==================== URL 参数 ====================
+const cache = {
+"images/kongjian/space17":{"title":"空间设计","desc":"集美司生活馆空间"},
+"images/kongjian/space8":{"title":"空间设计","desc":"串东家连锁烧烤店"},
+"images/kongjian/space14":{"title":"空间设计","desc":"杭州西湖公安局指挥室外观"},
+"images/kongjian/space1":{"title":"空间设计","desc":"安徽寿县文化街区"},
+"images/kongjian/space11":{"title":"空间设计","desc":"沙小匠沙县小吃连锁店"},
+"images/kongjian/space18":{"title":"图腾柱设计","desc":"连云港化工产业园图腾柱"},
+"images/kongjian/space9":{"title":"空间设计","desc":"鼎尚食疗店中店"},
+"images/kongjian/space16":{"title":"建筑、空间设计","desc":"杭州云竹茶庄"},
+"images/kongjian/space12":{"title":"空间设计","desc":"临平公安综合服务大厅"},
+"images/kongjian/space13":{"title":"空间设计","desc":"杭州T-CAR园区改造"},
+"images/kongjian/space15":{"title":"空间设计","desc":"青山控股集团数字指挥室"},
+"images/kongjian/space10":{"title":"空间设计","desc":"酩翠庄红酒庄"},
+"images/kongjian/space3":{"title":"空间设计","desc":"圣霓兰养生馆"},
+"images/kongjian/space2":{"title":"空间设计","desc":"吉林市文化商业街区"},
+"images/kongjian/space6":{"title":"空间设计","desc":"杭州临平公安局办公室"},
+"images/kongjian/space5":{"title":"空间设计","desc":"杭州汇隆控股建筑外立面改造"},
+"images/pinpai/brand11":{"title":"品牌logo及应用","desc":"悦己 . 三养空间"},
+"images/pinpai/brand14":{"title":"品牌logo及应用","desc":"广西巨门生态农牧科技"},
+"images/pinpai/brand4":{"title":"茶叶品牌","desc":"不淄居logo及应用"},
+"images/pinpai/brand18":{"title":"品牌logo及应用","desc":"除锈科技"},
+"images/pinpai/brand20":{"title":"品牌logo及VI","desc":"意大利罗马骑士"},
+"images/pinpai/brand15":{"title":"品牌logo及应用","desc":"节目品牌"},
+"images/pinpai/brand7":{"title":"品牌logo及应用","desc":"清梵健康管理"},
+"images/pinpai/brand2":{"title":"品牌logo及应用","desc":"饺子范面食"},
+"images/pinpai/brand1":{"title":"品牌logo及应用","desc":"她色服装品牌"},
+"images/pinpai/brand6":{"title":"品牌logo及应用","desc":"新月香饼家"},
+"images/pinpai/brand9":{"title":"品牌logo及应用","desc":"玲珑美伊"},
+"images/pinpai/brand13":{"title":"品牌logo及应用","desc":"沙小匠沙县小吃logo"},
+"images/pinpai/brand5":{"title":"品牌logo及应用","desc":"萨拉蒂商业"},
+"images/pinpai/brand10":{"title":"品牌logo及应用","desc":"OL圈连锁店"},
+"images/pinpai/brand12":{"title":"品牌logo及应用","desc":"国薇生活空间"},
+"images/pinpai/brand19":{"title":"品牌logo及应用","desc":"律师行"},
+"images/pinpai/brand17":{"title":"品牌logo及应用","desc":"生鲜水产"},
+"images/pinpai/brand16":{"title":"品牌logo及应用","desc":"现卤快餐品牌"},
+"images/pinpai/brand8":{"title":"品牌logo及应用","desc":"超牛儿童品牌"},
+"images/pinpai/brand3":{"title":"品牌logo及应用","desc":"法国黑公鸡红酒"},
+"images/baozhuang/package5":{"title":"包装设计","desc":"法国他色服装包装设计"},
+"images/baozhuang/package1":{"title":"包装设计","desc":"美国安迪斯红酒包装设计"},
+"images/baozhuang/package11":{"title":"包装设计","desc":"陈太吉限量版"},
+"images/baozhuang/package8":{"title":"白酒包装","desc":"古井贡限量版包装设计"},
+"images/baozhuang/package15":{"title":"包装设计","desc":"斗将中国风"},
+"images/baozhuang/package13":{"title":"珍览酱酒","desc":"系列包装"},
+"images/baozhuang/package14":{"title":"包装设计","desc":"茅台镇酒包装"},
+"images/baozhuang/package12":{"title":"包装设计","desc":"赵政久尊贵版"},
+"images/baozhuang/package3":{"title":"包装设计","desc":"雪翼冰酒包装设计"},
+"images/baozhuang/package2":{"title":"包装设计","desc":"意大利红酒包装设计"},
+"images/baozhuang/package7":{"title":"包装设计","desc":"意大利罗马骑士红酒包装设计"},
+"images/baozhuang/package9":{"title":"白酒包装设计","desc":"百年赖贵山包装设计"},
+"images/baozhuang/package10":{"title":"白酒包装","desc":"酱小伙包装设计"},
+"images/baozhuang/package18":{"title":"包装设计","desc":"韩国京畿道米酒包装"},
+"images/baozhuang/package4":{"title":"包装设计","desc":"意大利气泡葡萄酒包装设计"},
+"images/baozhuang/package16":{"title":"包装设计","desc":"古丈茶礼套装"},
+"images/baozhuang/package17":{"title":"包装设计","desc":"金马转运礼盒"},
+"images/pingmian/print10":{"title":"平面设计","desc":"楼宇广告"},
+"images/pingmian/print8":{"title":"平面设计","desc":"意大利罗马骑士糖酒会物料"},
+"images/pingmian/print11":{"title":"平面设计","desc":"意大利红酒推介册"},
+"images/pingmian/print9":{"title":"平面设计","desc":"意大利罗马骑士楼宇广告"},
+"images/pingmian/print3":{"title":"平面设计","desc":"电商海报"},
+"images/pingmian/print2":{"title":"平面设计","desc":"品牌基础应用"},
+"images/pingmian/print1":{"title":"平面设计","desc":"小仙梅杨梅酒酒书"}
+};
+
 const params = new URLSearchParams(location.search);
-const title = decodeURIComponent(params.get('title') || '作品标题');
 const prefix = decodeURIComponent(params.get('prefix') || '');
-const pageKey = "DETAIL_" + (prefix || "default");
+const item = cache[prefix] || {title:'', desc:''};
+document.getElementById('workTitle').innerText = item.title;
+document.getElementById('workDesc').innerText = item.desc;
 
-// ==================== 元素 ====================
-const titleEl = document.getElementById('workTitle');
-const descEl = document.getElementById('workDesc');
-const slidesEl = document.getElementById('slides');
-const thumbsEl = document.getElementById('thumbs');
-
-// ==================== 本地自动保存 ====================
-function loadSave(){
-    const t = localStorage.getItem(pageKey+"_title");
-    const d = localStorage.getItem(pageKey+"_desc");
-    if(t) titleEl.innerText = t; else titleEl.innerText = title;
-    if(d) descEl.innerText = d;
-    // 强制禁用编辑
-    titleEl.contentEditable = false;
-    descEl.contentEditable = false;
-}
-function saveNow(){
-    return; // 屏蔽保存逻辑
-}
-
-loadSave();
-titleEl.removeEventListener('input', saveNow); // 移除保存事件
-descEl.removeEventListener('input', saveNow); // 移除保存事件
-
-// ==================== 加载轮播 ====================
 let curr = 0;
 let total = 0;
 
-async function loadImgs(){
-    slidesEl.innerHTML = "";
-    thumbsEl.innerHTML = "";
-    if(!prefix) return;
-    for(let i=1;i<=20;i++){
-        const src = prefix+"-"+i+".jpg";
-        const img = new Image();
-        img.src = src;
-        await new Promise(r=>{
-            img.onload=()=>{
-                const s = document.createElement("div");
-                s.className="slide";
-                s.innerHTML=`<img src="${src}">`;
-                slidesEl.appendChild(s);
-                
-                const t = document.createElement("img");
-                t.className="thumb";
-                t.src=src;
-                t.dataset.index = total;
-                thumbsEl.appendChild(t);
-                total++; r();
-            };
-            img.onerror=()=>r(0);
+async function loadDetailImages() {
+    const slidesEl = document.getElementById('slides');
+    const thumbsEl = document.getElementById('thumbs');
+    let consecutiveMissing = 0;
+
+    for (let i = 1; i <= 999; i++) {
+        if (consecutiveMissing >= 20) break;
+        const src = `${prefix}-${i}.jpg`;
+
+        const exists = await new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = src;
         });
+
+        if (!exists) {
+            consecutiveMissing++;
+            continue;
+        }
+
+        consecutiveMissing = 0;
+        const s = document.createElement('div');
+        s.className = 'slide';
+        s.innerHTML = `<img src="${src}">`;
+        slidesEl.appendChild(s);
+
+        const t = document.createElement('img');
+        t.className = 'thumb';
+        t.src = src;
+        t.dataset.index = total;
+        thumbsEl.appendChild(t);
+        total++;
     }
     show(0);
 }
 
-function show(idx){
+function show(idx) {
     const slides = document.querySelectorAll('.slide');
     const thumbs = document.querySelectorAll('.thumb');
-    if(total===0)return;
-    if(idx<0)idx=0; if(idx>=total)idx=total-1;
-    curr=idx;
-    slides.forEach((e,i)=>e.classList.toggle('active',i===idx));
-    thumbs.forEach((e,i)=>e.classList.toggle('active',i===idx));
+    if (total === 0) return;
+    idx = Math.max(0, Math.min(total - 1, idx));
+    curr = idx;
+    slides.forEach((e, i) => e.classList.toggle('active', i === idx));
+    thumbs.forEach((e, i) => e.classList.toggle('active', i === idx));
 }
 
-document.getElementById('prevBtn').onclick=()=>show(curr-1);
-document.getElementById('nextBtn').onclick=()=>show(curr+1);
-thumbsEl.addEventListener('click',e=>{
-    if(e.target.classList.contains('thumb')) show(Number(e.target.dataset.index));
+document.getElementById('prevBtn').onclick = () => show(curr - 1);
+document.getElementById('nextBtn').onclick = () => show(curr + 1);
+document.getElementById('thumbs').addEventListener('click', e => {
+    if (e.target.classList.contains('thumb')) show(+e.target.dataset.index);
 });
-
-// ==================== 双击编辑 ====================
-let edit=false;
-document.addEventListener('dblclick',()=>{
-    return; // 屏蔽编辑模式切换
-});
-
-// ==================== 返回 ====================
-document.getElementById('backBtn').onclick=()=>{
-    // 屏蔽编辑判断，直接返回
-    let to="#category-brand";
-    if(prefix.includes("包装"))to="#category-package";
-    if(prefix.includes("空间"))to="#category-space";
-    if(prefix.includes("平面"))to="#category-print";
-    location.href="index.html"+to;
+document.getElementById('backBtn').onclick = () => {
+    let to = '#category-brand';
+    if (prefix.includes('包装')) to = '#category-package';
+    if (prefix.includes('空间')) to = '#category-space';
+    if (prefix.includes('平面')) to = '#category-print';
+    location.href = 'index.html' + to;
 };
 
-// ==================== 导出并替换原文件 ====================
-document.getElementById('saveBtn').onclick=()=>{
-    return; // 屏蔽导出逻辑
-};
-
-loadImgs();
+loadDetailImages();
 </script>
-
-<div id="agent"></div></body><div id="ai-assist-root-bangs"></div><div id="shadow-root-ai-zhishiku"></div><div id="ai-assist-root-new"></div></html>
+</body>
+</html>
