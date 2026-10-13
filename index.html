@@ -937,51 +937,5 @@ window.onload = function(){
     show("printList","pingmian",printList);
 }
 </script>
-<script>
-// 针对你网站源码 100% 精准生效：点哪里进 → 返回就停在哪里
-document.addEventListener('DOMContentLoaded', function() {
-
-  // 绑定你网站【真正点击的作品图片】保存滚动位置
-  document.querySelectorAll('.work-img').forEach(img => {
-    img.onclick = function() {
-      sessionStorage.setItem('MY_SCROLL', window.scrollY);
-    };
-  });
-
-  // 返回时强制恢复（延迟确保页面完全渲染）
-  const pos = sessionStorage.getItem('MY_SCROLL');
-  if (pos) {
-    setTimeout(() => {
-      window.scrollTo(0, parseInt(pos));
-      sessionStorage.removeItem('MY_SCROLL');
-    }, 50);
-  }
-
-});
-</script><script>
-<script>
-// 你实测成功过的原版 · 只做定位 · 不搞多余操作
-document.addEventListener('DOMContentLoaded', function() {
-    if (history.scrollRestoration) {
-        history.scrollRestoration = 'manual';
-    }
-
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('work-img')) {
-            localStorage.setItem('SCROLL_FIX', window.scrollY);
-        }
-    }, true);
-
-    window.addEventListener('load', function() {
-        let pos = localStorage.getItem('SCROLL_FIX');
-        if (pos) {
-            setTimeout(() => {
-                window.scrollTo(0, parseInt(pos));
-                localStorage.removeItem('SCROLL_FIX');
-            }, 50);
-        }
-    });
-});
-</script>
 </body>
 </html>
