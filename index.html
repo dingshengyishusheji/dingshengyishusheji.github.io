@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>杭州鼎笙艺术设计 | 陈志坚 独立设计师</title>
@@ -17,7 +18,7 @@
             line-height: 1.6;
         }
 
-        /* 编辑模式提示条 */
+        /* 编辑模式提示条 - 永久隐藏 */
         .edit-mode-bar {
             position: fixed;
             top: 0;
@@ -29,13 +30,13 @@
             padding: 8px;
             font-size: 14px;
             z-index: 9999;
-            display: none;
+            display: none !important;
         }
         .edit-mode-bar.show {
-            display: block;
+            display: none !important;
         }
 
-        /* 导出按钮 */
+        /* 导出按钮 - 永久隐藏 */
         .export-btn {
             position: fixed;
             top: 70px;
@@ -48,30 +49,28 @@
             cursor: pointer;
             font-size: 14px;
             z-index: 9998;
-            display: none;
+            display: none !important;
         }
         .export-btn.show {
-            display: block;
+            display: none !important;
         }
         .export-btn:hover {
             background-color: #0052a3;
         }
 
-        /* 可编辑元素样式 */
+        /* 可编辑元素样式 - 移除编辑相关交互 */
         .editable {
             transition: all 0.2s ease;
-            cursor: text !important;
+            cursor: default !important;
             position: relative;
             z-index: 10;
         }
         .editable:hover {
-            outline: 2px dashed #0066cc;
-            outline-offset: 2px;
+            outline: none !important;
         }
         .editable:focus {
-            outline: 2px solid #0066cc;
-            outline-offset: 2px;
-            background-color: rgba(0,102,200,0.05);
+            outline: none !important;
+            background-color: transparent !important;
         }
 
         /* 导航栏 */
@@ -280,9 +279,9 @@
             pointer-events: none;
         }
 
-        /* 编辑模式下，文字区域可点击 */
+        /* 编辑模式下，文字区域可点击 - 屏蔽 */
         .edit-mode-active .work-info {
-            pointer-events: auto !important;
+            pointer-events: none !important;
         }
 
         /* 作品描述 */
@@ -391,70 +390,20 @@
             }
         }
     </style>
-<style type="text/css">.qa-sdk-wrapper {
-  position: fixed;
-  width: 400px;
-  right: -600px;
-  max-height: 530px;
-  overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
-  transition: all 0.5s ease-in-out;
-  background: #fff;
-}
-
-.qa-sdk-close-btn {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  position: absolute;
-  top: 16px;
-  right: 16px;
-}
-
-.qa-sdk-close-btn:hover {
-  border-radius: 50%;
-  background-color: #d5d9df;
-}
-
-#qa-sdk-iframe {
-  width: 400px;
-}
-
-@media (min-width: 1024px) and (max-width: 1366px) {
-  .qa-sdk-wrapper{
-    width: 356px;
-  }
-  #qa-sdk-iframe {
-    width: 356px;
-  }
-}
-</style><style id="ai-assist-webType-style">
-    .ai-assist-highlight {
-      background: yellow;
-    }
-    @media print {
-      #ai-assist-root-bangs,
-      #ai-assist-root-bilibili,
-      #ai-assist-root-new {
-        display: none !important;
-      }
-    }
-  </style></head>
-<body style="scroll-behavior: smooth;">
-    <!-- 编辑模式提示条 -->
+</head>
+<body>
+    <!-- 编辑模式提示条 - 保留结构但永久隐藏 -->
     <div class="edit-mode-bar" id="editModeBar">
         ✏️ 编辑模式已开启 | 点击文字直接修改 | 双击空白处退出并自动保存
     </div>
 
-    <!-- 导出按钮 -->
+    <!-- 导出按钮 - 保留结构但永久隐藏 -->
     <button class="export-btn" id="exportBtn" onclick="exportWebsite()">📥 导出并替换原文件</button>
 
     <!-- 导航栏 -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo editable" data-key="logo">杭州鼎笙艺术设计有限公司</a>
+            <a href="index.html" class="logo editable" data-key="logo">杭州鼎笙艺术设计</a>
             <div class="nav-links">
                 <a href="#home">首页</a>
                 <a href="#works">作品</a>
@@ -467,8 +416,8 @@
     <!-- Banner自动轮播 -->
     <section id="home" class="banner">
         <div class="banner-slides">
-            <div class="banner-slide" style="background-image: url('images/banner.jpg')"></div>
-            <div class="banner-slide active" style="background-image: url('images/banner-1.jpg')"></div>
+            <div class="banner-slide active" style="background-image: url('images/banner.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-1.jpg')"></div>
             <div class="banner-slide" style="background-image: url('images/banner-2.jpg')"></div>
             <div class="banner-slide" style="background-image: url('images/banner-3.jpg')"></div>
             <div class="banner-slide" style="background-image: url('images/banner-4.jpg')"></div>
@@ -482,44 +431,50 @@
     <!-- 作品展示区 -->
     <section id="works" class="section">
         <div id="category-nav-section" class="category-nav">
-            <a class="editable" data-key="nav-package" data-target="#category-package">包装设计类</a>
-            <a class="editable" data-key="nav-space" data-target="#category-space">空间设计类</a>
-            <a class="editable" data-key="nav-brand" data-target="#category-brand">品牌设计类</a>
-            <a class="editable" data-key="nav-print" data-target="#category-print">平面设计类</a>
+            <a class="editable" data-key="nav-package" data-target="#category-package">包装/礼盒设计</a>
+            <a class="editable" data-key="nav-space" data-target="#category-space">空间/展厅设计</a>
+            <a class="editable" data-key="nav-brand" data-target="#category-brand">品牌/LOGO/VI设计</a>
+            <a class="editable" data-key="nav-print" data-target="#category-print">平面/广告设计</a>
         </div>
 
         <!-- 1. 品牌/LOGO/VI设计 -->
         <h3 id="category-brand" class="category-title editable" data-key="category-brand">品牌/LOGO/VI设计</h3>
-        <div class="works-grid" id="brand-works-grid"><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand1-1.jpg" src="images/品牌设计类/brand1-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A11&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand1&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-1">她色国际服装品牌logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand2-1.jpg" src="images/品牌设计类/brand2-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A12&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand2&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-2">饺子范面点logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand3-1.jpg" src="images/品牌设计类/brand3-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A13&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand3&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-3">法国黑公鸡红酒logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand4-1.jpg" src="images/品牌设计类/brand4-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A14&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand4&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-4">不淄居茶叶logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand5-1.jpg" src="images/品牌设计类/brand5-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A15&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand5&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-5">萨拉蒂品牌logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand6-1.jpg" src="images/品牌设计类/brand6-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A16&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand6&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-6">新月香饼家logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand7-1.jpg" src="images/品牌设计类/brand7-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A17&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand7&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-7">清梵康养品牌logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand8-1.jpg" src="images/品牌设计类/brand8-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A18&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand8&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-8">超牛儿童品牌logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand9-1.jpg" src="images/品牌设计类/brand9-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A19&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand9&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-9">玲珑美伊品牌logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand10-1.jpg" src="images/品牌设计类/brand10-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A110&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand10&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-10">OL圈连锁专卖logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand11-1.jpg" src="images/品牌设计类/brand11-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A111&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand11&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-11">悦己康养logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand12-1.jpg" src="images/品牌设计类/brand12-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A112&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand12&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-12">国薇生活馆logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand13-1.jpg" src="images/品牌设计类/brand13-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A113&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand13&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-13">沙小匠沙县小吃logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand14-1.jpg" src="images/品牌设计类/brand14-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A114&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand14&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-14">广西巨门生态logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand15-1.jpg" src="images/品牌设计类/brand15-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A115&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand15&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-15">好歌30年logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand16-1.jpg" src="images/品牌设计类/brand16-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A116&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand16&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-16">牛股来了连锁店logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand17-1.jpg" src="images/品牌设计类/brand17-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A117&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand17&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-17">功夫珍蚝logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand18-1.jpg" src="images/品牌设计类/brand18-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A118&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand18&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-18">心澄钺科技logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand19-1.jpg" src="images/品牌设计类/brand19-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A119&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand19&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-19">京罚顾问logo</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/品牌设计类/brand20-1.jpg" src="images/品牌设计类/brand20-1.jpg" data-detail-url="detail.html?title=%E5%93%81%E7%89%8C%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A120&amp;prefix=images%2F%E5%93%81%E7%89%8C%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fbrand20&amp;captions=LOGO%E8%AE%BE%E8%AE%A1%2CVI%E5%BA%94%E7%94%A8%2C%E5%93%81%E7%89%8C%E6%89%8B%E5%86%8C"><div class="work-info"><p class="work-desc editable" data-key="work-desc-brand-20">罗马骑士品牌VI</p></div></div></div>
+        <div class="works-grid" id="brand-works-grid"></div>
 
         <!-- 2. 空间/展厅设计 -->
         <h3 id="category-space" class="category-title editable" data-key="category-space">空间/展厅设计</h3>
-        <div class="works-grid" id="space-works-grid"><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space1-1.jpg" src="images/空间设计类/space1-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A11&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace1&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-1">安徽寿县文化街区设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space2-1.jpg" src="images/空间设计类/space2-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A12&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace2&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-2">吉林法式文化商业街设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space3-1.jpg" src="images/空间设计类/space3-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A13&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace3&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-3">圣霓兰美学馆设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space5-1.jpg" src="images/空间设计类/space5-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A15&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace5&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-5">杭州汇隆控股建筑外观改造设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space6-1.jpg" src="images/空间设计类/space6-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A16&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace6&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-6">杭州临平公安局办公室设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space8-1.jpg" src="images/空间设计类/space8-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A18&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace8&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-8">串东家连锁烧烤店设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space9-1.jpg" src="images/空间设计类/space9-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A19&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace9&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-9">鼎尚汤品店中店设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space10-1.jpg" src="images/空间设计类/space10-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A110&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace10&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-10">酩翠庄红酒庄设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space11-1.jpg" src="images/空间设计类/space11-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A111&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace11&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-11">沙小匠沙县小吃连锁店设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space12-1.jpg" src="images/空间设计类/space12-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A112&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace12&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-12">杭州临平公安局服务大厅设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space13-1.jpg" src="images/空间设计类/space13-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A113&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace13&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-13">杭州T-CAR园区改造设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space14-1.jpg" src="images/空间设计类/space14-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A114&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace14&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-14">杭州西湖公安局指挥室设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space15-1.jpg" src="images/空间设计类/space15-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A115&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace15&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-15">青山控股数字大厅设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space16-1.jpg" src="images/空间设计类/space16-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A116&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace16&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-16">杭州云竹茶庄设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space17-1.jpg" src="images/空间设计类/space17-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A117&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace17&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-17">集美司美学生活馆设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/空间设计类/space18-1.jpg" src="images/空间设计类/space18-1.jpg" data-detail-url="detail.html?title=%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A118&amp;prefix=images%2F%E7%A9%BA%E9%97%B4%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fspace18&amp;captions=%E5%B1%95%E5%8E%85%E5%85%A8%E6%99%AF%2C%E5%B1%95%E7%A4%BA%E5%8C%BA%2C%E6%B4%BD%E8%B0%88%E5%8C%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-space-18">园区图腾</p></div></div></div>
+        <div class="works-grid" id="space-works-grid"></div>
 
         <!-- 3. 包装/礼盒设计 -->
         <h3 id="category-package" class="category-title editable" data-key="category-package">包装/礼盒设计</h3>
-        <div class="works-grid" id="package-works-grid"><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package1-1.jpg" src="images/包装设计类/package1-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A11&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage1&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-1">美国安迪斯红酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package2-1.jpg" src="images/包装设计类/package2-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A12&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage2&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-2">意大利红酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package3-1.jpg" src="images/包装设计类/package3-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A13&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage3&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-3">冰酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package4-1.jpg" src="images/包装设计类/package4-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A14&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage4&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-4">意大利起泡葡萄酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package5-1.jpg" src="images/包装设计类/package5-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A15&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage5&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-5">她色服装包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package7-1.jpg" src="images/包装设计类/package7-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A17&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage7&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-7">意大利罗马骑士葡萄酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package8-1.jpg" src="images/包装设计类/package8-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A18&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage8&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-8">古井贡酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package9-1.jpg" src="images/包装设计类/package9-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A19&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage9&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-9">百年赖贵山包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package10-1.jpg" src="images/包装设计类/package10-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A110&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage10&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-10">酱小伙包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package11-1.jpg" src="images/包装设计类/package11-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A111&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage11&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-11">陈太吉白酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package12-1.jpg" src="images/包装设计类/package12-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A112&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage12&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-12">赵政久白酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package13-1.jpg" src="images/包装设计类/package13-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A113&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage13&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-13">珍览白酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package14-1.jpg" src="images/包装设计类/package14-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A114&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage14&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-14">镇酒白酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package15-1.jpg" src="images/包装设计类/package15-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A115&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage15&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-15">斗将白酒包装设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package16-1.jpg" src="images/包装设计类/package16-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A116&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage16&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-16">古丈茶酒礼盒设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package17-1.jpg" src="images/包装设计类/package17-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A117&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage17&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-17">金马礼盒设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/包装设计类/package18-1.jpg" src="images/包装设计类/package18-1.jpg" data-detail-url="detail.html?title=%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A118&amp;prefix=images%2F%E5%8C%85%E8%A3%85%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fpackage18&amp;captions=%E7%A4%BC%E7%9B%92%E6%AD%A3%E9%9D%A2%2C%E6%89%93%E5%BC%80%E6%95%88%E6%9E%9C%2C%E7%BB%86%E8%8A%82%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-package-18">韩国京畿道包装设计</p></div></div></div>
+        <div class="works-grid" id="package-works-grid"></div>
 
         <!-- 4. 平面/广告设计 -->
         <h3 id="category-print" class="category-title editable" data-key="category-print">平面/广告设计</h3>
-        <div class="works-grid" id="print-works-grid"><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/平面设计类/print1-1.jpg" src="images/平面设计类/print1-1.jpg" data-detail-url="detail.html?title=%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A11&amp;prefix=images%2F%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fprint1&amp;captions=%E4%B8%BB%E8%A7%86%E8%A7%89%E6%B5%B7%E6%8A%A5%2C%E7%B3%BB%E5%88%97%E6%B5%B7%E6%8A%A5%2C%E5%BA%94%E7%94%A8%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-print-1">小仙梅酒书设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/平面设计类/print2-1.jpg" src="images/平面设计类/print2-1.jpg" data-detail-url="detail.html?title=%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A12&amp;prefix=images%2F%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fprint2&amp;captions=%E4%B8%BB%E8%A7%86%E8%A7%89%E6%B5%B7%E6%8A%A5%2C%E7%B3%BB%E5%88%97%E6%B5%B7%E6%8A%A5%2C%E5%BA%94%E7%94%A8%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-print-2">商业平面设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/平面设计类/print3-1.jpg" src="images/平面设计类/print3-1.jpg" data-detail-url="detail.html?title=%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A13&amp;prefix=images%2F%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fprint3&amp;captions=%E4%B8%BB%E8%A7%86%E8%A7%89%E6%B5%B7%E6%8A%A5%2C%E7%B3%BB%E5%88%97%E6%B5%B7%E6%8A%A5%2C%E5%BA%94%E7%94%A8%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-print-3">商业海报</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/平面设计类/print8-1.jpg" src="images/平面设计类/print8-1.jpg" data-detail-url="detail.html?title=%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A18&amp;prefix=images%2F%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fprint8&amp;captions=%E4%B8%BB%E8%A7%86%E8%A7%89%E6%B5%B7%E6%8A%A5%2C%E7%B3%BB%E5%88%97%E6%B5%B7%E6%8A%A5%2C%E5%BA%94%E7%94%A8%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-print-8">罗马骑士红酒广告</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/平面设计类/print9-1.jpg" src="images/平面设计类/print9-1.jpg" data-detail-url="detail.html?title=%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A19&amp;prefix=images%2F%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fprint9&amp;captions=%E4%B8%BB%E8%A7%86%E8%A7%89%E6%B5%B7%E6%8A%A5%2C%E7%B3%BB%E5%88%97%E6%B5%B7%E6%8A%A5%2C%E5%BA%94%E7%94%A8%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-print-9">罗马骑士楼宇广告</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/平面设计类/print10-1.jpg" src="images/平面设计类/print10-1.jpg" data-detail-url="detail.html?title=%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A110&amp;prefix=images%2F%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fprint10&amp;captions=%E4%B8%BB%E8%A7%86%E8%A7%89%E6%B5%B7%E6%8A%A5%2C%E7%B3%BB%E5%88%97%E6%B5%B7%E6%8A%A5%2C%E5%BA%94%E7%94%A8%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-print-10">商业平面设计</p></div></div><div class="work-card"><img class="work-img lazy-load loaded" data-src="images/平面设计类/print11-1.jpg" src="images/平面设计类/print11-1.jpg" data-detail-url="detail.html?title=%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A111&amp;prefix=images%2F%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1%E7%B1%BB%2Fprint11&amp;captions=%E4%B8%BB%E8%A7%86%E8%A7%89%E6%B5%B7%E6%8A%A5%2C%E7%B3%BB%E5%88%97%E6%B5%B7%E6%8A%A5%2C%E5%BA%94%E7%94%A8%E5%B1%95%E7%A4%BA"><div class="work-info"><p class="work-desc editable" data-key="work-desc-print-11">意大利红酒酒书</p></div></div></div>
+        <div class="works-grid" id="print-works-grid"></div>
     </section>
 
     <!-- 关于我+联系我 -->
     <section id="about" class="about-section">
         <div class="about-container">
-            <h2 class="editable" data-key="about-title">关于我们</h2>
+            <h2 class="editable" data-key="about-title">关于我</h2>
             <div class="about-text editable" data-key="about-text">20+年设计行业经验，专注商业空间与品牌视觉融合设计。
 擅长从品牌战略出发，打造兼具美学与商业价值的设计作品。
 服务过100+企业客户，涵盖品牌、空间、包装等多个领域。</div>
 
             <div id="contact" class="contact-box">
-                <div class="contact-item editable" data-key="contact-phone">📱
-                    微信/电话：186 0651 0351</div>
-                <div class="contact-item editable" data-key="contact-email">📧
-                    邮箱：309699919@qq.com</div>
-                <div class="contact-item editable" data-key="contact-address">📍
-                    地址：浙江杭州西湖区翠苑创立方B座507-2室</div>
+                <div class="contact-item editable" data-key="contact-phone">
+                    <span>📱</span>
+                    <span>微信/电话：186 0651 0351</span>
+                </div>
+                <div class="contact-item editable" data-key="contact-email">
+                    <span>📧</span>
+                    <span>邮箱：309699919@qq.com</span>
+                </div>
+                <div class="contact-item editable" data-key="contact-address">
+                    <span>📍</span>
+                    <span>地址：浙江杭州西湖区翠苑创立方B座507-2室</span>
+                </div>
             </div>
         </div>
     </section>
@@ -530,364 +485,503 @@
     </footer>
 
     <script>
-        // ================== 1. Banner轮播优化 ==================
-        const slides = document.querySelectorAll('.banner-slide');
-        let currentSlide = 0;
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-        const bannerContainer = document.querySelector('.banner');
-        let slideInterval = setInterval(nextSlide, 6000);
-        bannerContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        bannerContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 6000));
+    // 注入siteCache缓存数据
+    const siteCache = {
+        "work-brand14-title": "品牌全案设计14",
+        "DETAIL_images/kongjian/space17_title": "空间设计",
+        "banner-subtitle": "陈志坚设计工作室 | CHEN ZHIJIAN DESIGN STUDIO",
+        "contact-address": "📍\n                    地址：浙江杭州西湖区翠苑创立方B座507-2室",
+        "work-brand20-title": "品牌全案设计20",
+        "wx": "📧 309699919@qq.com",
+        "work-space1-title": "空间设计1",
+        "DETAIL_images/kongjian/space8_desc": "串东家连锁烧烤店",
+        "DETAIL_images/baozhuang/package5_title": "包装设计",
+        "work-brand4-desc": "品牌全案设计",
+        "DETAIL_images/kongjian/space14_title": "空间设计",
+        "work-space13-desc": "商业空间设计",
+        "DETAIL_images/pinpai/brand11_desc": "悦己 . 三养空间",
+        "detail-images/pingmian/print1-caption-4": "图片5描述",
+        "DETAIL_images/pinpai/brand14_title": "品牌logo及应用",
+        "DETAIL_images/pinpai/brand4_title": "茶叶品牌",
+        "DETAIL_images/baozhuang/package8_sub": "古井贡限量版包装设计",
+        "DETAIL_images/pinpai/brand18_desc": "除锈科技",
+        "DETAIL_images/pingmian/print10_title": "平面设计",
+        "DETAIL_images/kongjian/space1_title": "空间设计",
+        "DETAIL_images/baozhuang/package14_title": "包装设计 ",
+        "DETAIL_images/baozhuang/package5_desc": "法国他色服装包装设计",
+        "DETAIL_images/pinpai/brand4_desc": "不淄居logo及应用",
+        "work-brand15-desc": "品牌全案设计",
+        "DETAIL_images/baozhuang/package11_desc": "陈太吉限量版",
+        "work-space9-desc": "商业空间设计",
+        "work-desc-package-3": "冰酒包装设计",
+        "work-space17-title": "空间设计17",
+        "banner1": "鼎承匠心 · 笙绘美好",
+        "work-desc-brand-4": "不淄居茶叶logo",
+        "work-space10-title": "空间设计10",
+        "work-space6-desc": "商业空间设计",
+        "work-brand11-desc": "品牌全案设计",
+        "nav-print": "pingmian",
+        "work-desc-print-8": "罗马骑士红酒广告",
+        "work-print8-desc": "商业平面设计",
+        "caption-images/baozhuang/package8-1": "打开效果",
+        "DETAIL_images/kongjian/space11_title": "空间设计",
+        "work-brand2-desc": "品牌全案设计",
+        "DETAIL_PAGE_images/pinpai/brand8_title": "品牌LOGO设计",
+        "DETAIL_images/pinpai/brand20_title": "品牌logo及VI",
+        "DETAIL_images/pinpai/brand15_desc": "节目品牌",
+        "work-brand6-title": "品牌全案设计6",
+        "work-space6-title": "空间设计6",
+        "DETAIL_images/pinpai/brand7_title": "品牌logo及应用",
+        "work-desc-brand-13": "沙小匠沙县小吃logo",
+        "DETAIL_images/baozhuang/package1_desc": "美国安迪斯红酒包装设计",
+        "work-desc-brand-14": "广西巨门生态logo",
+        "DETAIL_images/pinpai/brand2_desc": "饺子范面食",
+        "work-brand1-desc": "品牌全案设计",
+        "work-brand8-desc": "品牌全案设计",
+        "work-package3-title": "包装设计3",
+        "work-desc-brand-1": "她色国际服装品牌logo",
+        "DETAIL_images/baozhuang/package15_desc": "斗将中国风",
+        "work-space9-title": "空间设计9",
+        "work-package18-desc": "产品包装设计",
+        "work-space8-desc": "商业空间设计",
+        "work-desc-package-5": "她色服装包装设计",
+        "work-package10-title": "包装设计10",
+        "work-brand4-title": "品牌全案设计4",
+        "DETAIL_PAGE_images/pinpai/brand20_title": "品牌VI设计\n",
+        "DETAIL_images/kongjian/space17_desc": "集美司生活馆空间",
+        "work-package13-desc": "产品包装设计",
+        "DETAIL_images/kongjian/space16_desc": "杭州云竹茶庄",
+        "work-space10-desc": "商业空间设计",
+        "caption-3": "图片4描述",
+        "DETAIL_images/baozhuang/package13_desc": "系列包装",
+        "DETAIL_images/pingmian/print8_desc": "意大利罗马骑士糖酒会物料",
+        "category-brand": "品牌/LOGO/VI设计",
+        "DETAIL_images/pinpai/brand13_desc": "沙小匠沙县小吃logo",
+        "banner-title": "鼎承匠心 · 笙绘美好",
+        "caption-6": "图片7描述",
+        "DETAIL_images/baozhuang/package12_desc": "赵政久尊贵版",
+        "DETAIL_images/pinpai/brand8_desc": "超牛儿童品牌",
+        "DETAIL_images/kongjian/space13_desc": "杭州T-CAR园区改造",
+        "work-desc-package-2": "意大利红酒包装设计",
+        "DETAIL_images/kongjian/space18_title": "图腾柱设计",
+        "work-space12-title": "空间设计12",
+        "section-title": "精选作品",
+        "DETAIL_images/pinpai/brand9_title": "品牌logo及应用",
+        "work-space12-desc": "商业空间设计",
+        "work-desc-brand-15": "好歌30年logo",
+        "DETAIL_images/pinpai/brand15_title": "品牌logo及应用",
+        "detail-images/baozhuang/package2-caption-7": "图片8描述",
+        "work-desc-brand-8": "超牛儿童品牌logo",
+        "work-desc-space-12": "杭州临平公安局服务大厅设计",
+        "work-brand14-desc": "品牌全案设计",
+        "caption-images/baozhuang/package12-2": "细节展示",
+        "DETAIL_images/pinpai/brand10_desc": "OL圈连锁店",
+        "work-space3-title": "空间设计3",
+        "DETAIL_images/baozhuang/package15_title": "包装设计",
+        "DETAIL_images/kongjian/space16_title": "建筑、空间设计",
+        "DETAIL_images/pingmian/print11_title": "平面设计",
+        "work-brand7-desc": "品牌全案设计",
+        "work-desc-space-2": "吉林法式文化商业街设计",
+        "DETAIL_images/pinpai/brand1_title": "品牌logo及应用",
+        "DETAIL_images/pinpai/brand6_title": "品牌logo及应用",
+        "work-package11-desc": "产品包装设计",
+        "work-brand3-title": "品牌全案设计3",
+        "caption-images/pinpai/brand3-2": "品牌图形",
+        "work-desc-package-13": "珍览白酒包装设计",
+        "work-print9-title": "平面设计9",
+        "detail-images/baozhuang/package2-caption-4": "图片5描述",
+        "work-package14-title": "包装设计14",
+        "work-package1-desc": "产品包装设计",
+        "work-space15-title": "空间设计15",
+        "DETAIL_images/baozhuang/package1_title": "包装设计",
+        "DETAIL_images/pingmian/print10_desc": "楼宇广告",
+        "DETAIL_images/pinpai/brand5_title": "品牌logo及应用",
+        "work-desc-brand-17": "功夫珍蚝logo",
+        "work-package10-desc": "产品包装设计",
+        "category-space": "空间/展厅设计",
+        "DETAIL_images/kongjian/space9_desc": "鼎尚食疗店中店",
+        "DETAIL_images/pinpai/brand16_title": "品牌logo及应用",
+        "work-space11-desc": "商业空间设计",
+        "DETAIL_images/pinpai/brand12_title": "品牌logo及应用",
+        "caption-images/pingmian/print3-4": "图片5描述",
+        "DETAIL_images/kongjian/space18_desc": "连云港化工产业园图腾柱",
+        "work-package5-desc": "产品包装设计",
+        "DETAIL_images/pinpai/brand19_desc": "律师行",
+        "work-package8-desc": "产品包装设计",
+        "work-print10-title": "平面设计10",
+        "work-space14-title": "空间设计14",
+        "work-desc-space-11": "沙小匠沙县小吃连锁店设计",
+        "work-desc-package-8": "古井贡酒包装设计",
+        "work-package14-desc": "产品包装设计",
+        "work-brand12-title": "品牌全案设计12",
+        "work-desc-space-17": "集美司美学生活馆设计",
+        "work-space13-title": "空间设计13",
+        "work-desc-brand-3": "法国黑公鸡红酒logo",
+        "caption-images/pinpai/brand2-2": "品牌手册",
+        "work-desc-print-9": "罗马骑士楼宇广告",
+        "caption-images/baozhuang/package12-0": "礼盒正面",
+        "work-package3-desc": "产品包装设计",
+        "detail_workDesc": "这里可以填写作品介绍、设计说明、项目背景等文字内容。",
+        "work-print11-desc": "商业平面设计",
+        "work-brand7-title": "品牌全案设计7",
+        "footer": "© 2026 杭州鼎笙艺术设计 版权所有",
+        "DETAIL_PAGE_images/pinpai/brand20_sub": "罗马骑士品牌VI设计",
+        "work-package12-title": "包装设计12",
+        "DETAIL_images/pinpai/brand19_title": "品牌logo及应用",
+        "work-desc-brand-6": "新月香饼家logo",
+        "work-print8-title": "平面设计8",
+        "DETAIL_images/pinpai/brand3_desc": "法国黑公鸡红酒",
+        "work-print3-title": "平面设计3",
+        "caption-images/pingmian/print3-0": "主视觉海报",
+        "work-desc-space-15": "青山控股数字大厅设计",
+        "detail-images/baozhuang/package2-caption-8": "图片9描述",
+        "work-space15-desc": "商业空间设计",
+        "work-desc-brand-20": "罗马骑士品牌VI",
+        "detail-images/baozhuang/package2-caption-2": "细节展示",
+        "DETAIL_images/pinpai/brand14_desc": "广西巨门生态农牧科技",
+        "caption-images/pingmian/print3-3": "图片4描述",
+        "DETAIL_images/pinpai/brand12_desc": "国薇生活空间",
+        "DETAIL_images/baozhuang/package13_sub": "副标题",
+        "DETAIL_images/pingmian/print2_title": "平面设计",
+        "work-package4-desc": "产品包装设计",
+        "caption-images/pinpai/brand2-0": "LOGO设计",
+        "work-brand16-title": "品牌全案设计16",
+        "addr": "📍 浙江省杭州市西湖区翠苑创立方B座507-2室",
+        "DETAIL_images/baozhuang/package10_title": "白酒包装",
+        "work-brand5-title": "品牌全案设计5",
+        "caption-images/pingmian/print3-1": "系列海报",
+        "DETAIL_images/pingmian/print2_desc": "品牌基础应用",
+        "work-desc-package-17": "金马礼盒设计",
+        "work-desc-print-10": "商业平面设计",
+        "caption-images/pinpai/brand3-4": "图片5描述",
+        "category-package": "包装/礼盒设计",
+        "DETAIL_images/kongjian/space12_desc": "临平公安综合服务大厅",
+        "cat3": "包装/礼盒设计",
+        "work-brand18-title": "品牌全案设计18",
+        "DETAIL_images/baozhuang/package7_desc": "意大利罗马骑士红酒包装设计",
+        "SAVE_images/baozhuang/package8_title": "白酒包装",
+        "work-desc-brand-19": "京罚顾问logo",
+        "work-space11-title": "空间设计11",
+        "DETAIL_images/baozhuang/package13_title": "珍览酱酒",
+        "caption-images/pingmian/print3-7": "图片8描述",
+        "SAVE_images/baozhuang/package2_desc": "意大利岩山/黑公鸡葡萄酒",
+        "DETAIL_images/pingmian/print11_desc": "意大利红酒推介册",
+        "DETAIL_images/pingmian/print8_title": "平面设计",
+        "detail-images/baozhuang/package2-caption-5": "图片6描述",
+        "DETAIL_images/pinpai/brand10_title": "品牌logo及应用",
+        "work-desc-space-5": "杭州汇隆控股建筑外观改造设计",
+        "DETAIL_images/baozhuang/package3_title": "包装设计",
+        "work-desc-space-14": "杭州西湖公安局指挥室设计",
+        "work-brand2-title": "品牌全案设计2",
+        "about-text": "20+年设计行业经验，专注商业空间与品牌视觉融合设计。\n擅长从品牌战略出发，打造兼具美学与商业价值的设计作品。\n服务过100+企业客户，涵盖品牌、空间、包装等多个领域。",
+        "DETAIL_images/baozhuang/package14_desc": "茅台镇酒包装",
+        "work-print2-title": "平面设计2",
+        "work-desc-brand-10": "OL圈连锁专卖logo",
+        "work-desc-package-1": "美国安迪斯红酒包装设计",
+        "DETAIL_images/baozhuang/package7_title": "包装设计",
+        "d_logo": "杭州鼎笙艺术设计",
+        "DETAIL_images/pingmian/print3_desc": "电商海报",
+        "DETAIL_images/kongjian/space6_desc": "杭州临平公安局办公室",
+        "DETAIL_images/pinpai/brand2_title": "品牌logo及应用",
+        "work-package2-desc": "产品包装设计",
+        "work-desc-space-10": "酩翠庄红酒庄设计",
+        "work-desc-brand-7": "清梵康养品牌logo",
+        "work-package13-title": "包装设计13",
+        "work-desc-space-18": "园区图腾设计",
+        "DETAIL_images/baozhuang/package18_desc": "韩国京畿道米酒包装 ",
+        "work-space14-desc": "商业空间设计",
+        "DETAIL_images/pinpai/brand13_title": "品牌logo及应用",
+        "work-space17-desc": "商业空间设计",
+        "caption-images/baozhuang/package12-1": "打开效果",
+        "work-desc-space-6": "杭州临平公安局办公室设计",
+        "work-desc-package-14": "镇酒白酒包装设计",
+        "DETAIL_images/pinpai/brand17_desc": "生鲜水产",
+        "work-brand19-desc": "品牌全案设计",
+        "detail-images/baozhuang/package2-caption-6": "图片7描述",
+        "DETAIL_images/baozhuang/package10_desc": "酱小伙包装设计",
+        "work-package15-title": "包装设计15",
+        "work-space16-desc": "商业空间设计",
+        "DETAIL_images/kongjian/space5_desc": "杭州汇隆控股建筑外立面改造",
+        "work-desc-brand-11": "悦己康养logo",
+        "DETAIL_images/pinpai/brand20_desc": "意大利罗马骑士",
+        "DETAIL_images/kongjian/space10_desc": "酩翠庄红酒庄",
+        "DETAIL_images/pinpai/brand17_title": "品牌logo及应用",
+        "cat-package": "baozhuang",
+        "detail-subtitle": "主视觉海报",
+        "work-desc-brand-16": "牛股来了连锁店logo",
+        "DETAIL_images/pinpai/brand9_desc": "玲珑美伊",
+        "detail_detailLogo": "杭州鼎笙艺术设计",
+        "d_title": "品牌全案设计17",
+        "work-desc-package-9": "百年赖贵山包装设计",
+        "detail-title": "小仙梅酒书",
+        "DETAIL_images/pinpai/brand6_desc": "新月香饼家",
+        "work-brand9-desc": "品牌全案设计",
+        "DETAIL_images/pingmian/print9_desc": "意大利罗马骑士楼宇广告",
+        "work-desc-brand-2": "饺子范面点logo",
+        "work-print9-desc": "商业平面设计",
+        "DETAIL_images/baozhuang/package9_desc": "百年赖贵山包装设计",
+        "work-package12-desc": "产品包装设计",
+        "work-desc-package-12": "赵政久尊贵版包装设计",
+        "work-brand16-desc": "品牌全案设计",
+        "work-print11-title": "平面设计11"
+    };
 
-        // ================== 2. 分类导航跳转 ==================
-        document.querySelectorAll('.category-nav a.editable').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('data-target');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start',
-                        inline: 'nearest'
-                    });
-                }
-            });
+    // ================== 1. Banner轮播优化 ==================
+    const slides = document.querySelectorAll('.banner-slide');
+    let currentSlide = 0;
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+    const bannerContainer = document.querySelector('.banner');
+    let slideInterval = setInterval(nextSlide, 6000);
+    bannerContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+    bannerContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 6000));
+
+    // ================== 2. 分类导航跳转 ==================
+    document.querySelectorAll('.category-nav a.editable').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('data-target');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }
+        });
+    });
+
+    // ================== 3. 作品加载+懒加载（核心修复：给产品描述绑定保存逻辑） ==================
+    const workCategories = [
+        {
+            gridId: 'brand-works-grid',
+            folder: 'images/pinpai/',
+            prefix: 'brand',
+            titleTpl: '品牌全案设计{num}',
+            descTpl: '品牌全案设计',
+            captionsTpl: 'LOGO设计,VI应用,品牌手册'
+        },
+        {
+            gridId: 'space-works-grid',
+            folder: 'images/kongjian/',
+            prefix: 'space',
+            titleTpl: '空间设计{num}',
+            descTpl: '商业空间设计',
+            captionsTpl: '展厅全景,展示区,洽谈区'
+        },
+        {
+            gridId: 'package-works-grid',
+            folder: 'images/baozhuang/',
+            prefix: 'package',
+            titleTpl: '包装设计{num}',
+            descTpl: '产品包装设计',
+            captionsTpl: '礼盒正面,打开效果,细节展示'
+        },
+        {
+            gridId: 'print-works-grid',
+            folder: 'images/pingmian/',
+            prefix: 'print',
+            titleTpl: '平面设计{num}',
+            descTpl: '商业平面设计',
+            captionsTpl: '主视觉海报,系列海报,应用展示'
+        }
+    ];
+
+    // 图片存在性检测
+    function checkImageExists(src) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            const timer = setTimeout(() => resolve(false), 3000);
+            img.onload = () => {
+                clearTimeout(timer);
+                resolve(true);
+            };
+            img.onerror = () => {
+                clearTimeout(timer);
+                resolve(false);
+            };
+            img.src = src;
+        });
+    }
+
+    // 创建作品卡片（核心修复：给描述绑定data-key、实时保存、加载缓存）
+    async function createWorkCard(category, seriesNum) {
+        const seriesKey = `${category.prefix}${seriesNum}`;
+        const imgSrc = `${category.folder}${seriesKey}-1.jpg`;
+        const exists = await checkImageExists(imgSrc);
+        if (!exists) return null;
+
+        // 优先从siteCache获取标题和描述
+        let title = siteCache[`work-${seriesKey}-title`] || category.titleTpl.replace('{num}', seriesNum);
+        let desc = siteCache[`work-${seriesKey}-desc`] || category.descTpl.replace('{num}', seriesNum);
+        const captions = category.captionsTpl || '图片1,图片2,图片3';
+        const detailUrl = `detail.html?title=${encodeURIComponent(title)}&prefix=${encodeURIComponent(category.folder + seriesKey)}&captions=${encodeURIComponent(captions)}`;
+
+        const card = document.createElement('div');
+        card.className = 'work-card';
+
+        // 仅给图片绑定跳转
+        const img = document.createElement('img');
+        img.className = 'work-img lazy-load';
+        img.dataset.src = imgSrc;
+        img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+        img.dataset.detailUrl = detailUrl;
+        img.addEventListener('click', function(e) {
+            // 屏蔽编辑模式判断，直接允许跳转
+            e.preventDefault();
+            window.open(detailUrl, '_blank', 'noopener');
         });
 
-        // ================== 3. 作品加载+懒加载（核心修复：给产品描述绑定保存逻辑） ==================
-        const workCategories = [
-            {
-                gridId: 'brand-works-grid',
-                folder: 'images/品牌设计类/',
-                prefix: 'brand',
-                titleTpl: '品牌全案设计{num}',
-                descTpl: '品牌全案设计',
-                captionsTpl: 'LOGO设计,VI应用,品牌手册'
-            },
-            {
-                gridId: 'space-works-grid',
-                folder: 'images/空间设计类/',
-                prefix: 'space',
-                titleTpl: '空间设计{num}',
-                descTpl: '商业空间设计',
-                captionsTpl: '展厅全景,展示区,洽谈区'
-            },
-            {
-                gridId: 'package-works-grid',
-                folder: 'images/包装设计类/',
-                prefix: 'package',
-                titleTpl: '包装设计{num}',
-                descTpl: '产品包装设计',
-                captionsTpl: '礼盒正面,打开效果,细节展示'
-            },
-            {
-                gridId: 'print-works-grid',
-                folder: 'images/平面设计类/',
-                prefix: 'print',
-                titleTpl: '平面设计{num}',
-                descTpl: '商业平面设计',
-                captionsTpl: '主视觉海报,系列海报,应用展示'
-            }
-        ];
+        // 作品文字区（给描述绑定唯一data-key）
+        const info = document.createElement('div');
+        info.className = 'work-info';
+        const descEl = document.createElement('p');
+        descEl.className = 'work-desc editable';
+        // 给每个产品描述生成唯一的data-key，用于保存（仅保留结构，屏蔽编辑）
+        descEl.setAttribute('data-key', `work-desc-${category.prefix}-${seriesNum}`);
+        descEl.textContent = desc;
+        // 移除编辑相关事件绑定
+        descEl.contentEditable = false;
 
-        // 图片存在性检测
-        function checkImageExists(src) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                const timer = setTimeout(() => resolve(false), 3000);
-                img.onload = () => {
-                    clearTimeout(timer);
-                    resolve(true);
-                };
-                img.onerror = () => {
-                    clearTimeout(timer);
-                    resolve(false);
-                };
-                img.src = src;
-            });
-        }
-
-        // 创建作品卡片（核心修复：给描述绑定data-key、实时保存、加载缓存）
-        async function createWorkCard(category, seriesNum) {
-            const seriesKey = `${category.prefix}${seriesNum}`;
-            const imgSrc = `${category.folder}${seriesKey}-1.jpg`;
-            const exists = await checkImageExists(imgSrc);
-            if (!exists) return null;
-
-            let title = category.titleTpl.replace('{num}', seriesNum);
-            let desc = category.descTpl.replace('{num}', seriesNum);
-            const captions = category.captionsTpl || '图片1,图片2,图片3';
-            const detailUrl = `detail.html?title=${encodeURIComponent(title)}&prefix=${encodeURIComponent(category.folder + seriesKey)}&captions=${encodeURIComponent(captions)}`;
-
-            const card = document.createElement('div');
-            card.className = 'work-card';
-
-            // 仅给图片绑定跳转
-            const img = document.createElement('img');
-            img.className = 'work-img lazy-load';
-            img.dataset.src = imgSrc;
-            img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-            img.dataset.detailUrl = detailUrl;
-            img.addEventListener('click', function(e) {
-                if(document.body.classList.contains('edit-mode-active')) return;
-                e.preventDefault();
-                window.open(detailUrl, '_blank', 'noopener');
-            });
-
-            // 作品文字区（给描述绑定唯一data-key）
-            const info = document.createElement('div');
-            info.className = 'work-info';
-            const descEl = document.createElement('p');
-            descEl.className = 'work-desc editable';
-            // 给每个产品描述生成唯一的data-key，用于保存
-            descEl.setAttribute('data-key', `work-desc-${category.prefix}-${seriesNum}`);
-            descEl.textContent = desc;
-
-            // 绑定实时保存事件（动态生成的元素，单独绑定）
-            descEl.addEventListener('input', debounce(function() {
-                saveEditableContent(this);
-            }, 500));
-
-            // 加载本地保存的内容（页面加载时读取）
-            const savedDesc = localStorage.getItem(`work-desc-${category.prefix}-${seriesNum}`);
+        // 加载siteCache中的内容（优先级高于localStorage）
+        const cacheKey = `work-desc-${category.prefix}-${seriesNum}`;
+        if (siteCache[cacheKey]) {
+            descEl.textContent = siteCache[cacheKey];
+        } else {
+            // 兼容原有localStorage逻辑（如果有）
+            const savedDesc = localStorage.getItem(cacheKey);
             if (savedDesc) descEl.textContent = savedDesc;
-
-            info.appendChild(descEl);
-            card.appendChild(img);
-            card.appendChild(info);
-
-            return card;
         }
 
-        // 分批加载作品
-        async function loadCategoryWorks(category) {
-            const grid = document.getElementById(category.gridId);
-            let loadedCount = 0;
-            for (let i = 1; i <= 50; i++) {
-                const card = await createWorkCard(category, i);
-                if (card) {
-                    grid.appendChild(card);
-                    loadedCount++;
-                }
+        info.appendChild(descEl);
+        card.appendChild(img);
+        card.appendChild(info);
+
+        return card;
+    }
+
+    // 分批加载作品
+    async function loadCategoryWorks(category) {
+        const grid = document.getElementById(category.gridId);
+        let loadedCount = 0;
+        for (let i = 1; i <= 50; i++) {
+            const card = await createWorkCard(category, i);
+            if (card) {
+                grid.appendChild(card);
+                loadedCount++;
             }
-            loadVisibleImages();
-            console.log(`✅ ${category.gridId} 加载完成，共${loadedCount}个作品`);
         }
+        loadVisibleImages();
+    }
 
-        // ================== 4. 懒加载核心修复 ==================
-        function loadVisibleImages() {
-            const lazyImages = document.querySelectorAll('.lazy-load:not(.loaded)');
-            if (lazyImages.length === 0) return;
-            
-            lazyImages.forEach(img => {
-                const rect = img.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight + 1000 && rect.bottom > -1000;
-                if (isVisible && !img.dataset.loading) {
-                    img.dataset.loading = 'true';
+    // 懒加载图片实现
+    function loadVisibleImages() {
+        const lazyImages = document.querySelectorAll('.work-img.lazy-load');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
                     img.src = img.dataset.src;
                     img.onload = () => {
                         img.classList.add('loaded');
-                        delete img.dataset.loading;
+                        img.classList.remove('lazy-load');
                     };
-                    img.onerror = () => {
-                        delete img.dataset.loading;
-                    };
+                    observer.unobserve(img);
                 }
             });
+        }, { rootMargin: '200px 0px' });
+
+        lazyImages.forEach(img => observer.observe(img));
+    }
+
+    // 初始化加载所有分类作品
+    window.addEventListener('DOMContentLoaded', async () => {
+        for (const category of workCategories) {
+            await loadCategoryWorks(category);
         }
+    });
 
-        // 节流函数
-        function throttle(fn, delay) {
-            let timer = null;
-            return function() {
-                if (!timer) {
-                    timer = setTimeout(() => {
-                        fn.apply(this, arguments);
-                        timer = null;
-                    }, delay);
-                }
-            };
-        }
-
-        // 初始化懒加载
-        const throttledLoad = throttle(loadVisibleImages, 80);
-        window.addEventListener('DOMContentLoaded', loadVisibleImages);
-        window.addEventListener('scroll', throttledLoad);
-        window.addEventListener('resize', throttledLoad);
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) loadVisibleImages();
-        });
-        window.addEventListener('load', loadVisibleImages);
-
-        // ================== 5. 编辑+自动保存+导出（核心修复：产品描述保存） ==================
-        let isEditMode = false;
-        const editModeBar = document.getElementById('editModeBar');
-        const exportBtn = document.getElementById('exportBtn');
-        
-        // 防抖函数
-        function debounce(fn, delay) {
-            let timer = null;
-            return function() {
-                clearTimeout(timer);
-                timer = setTimeout(() => fn.apply(this, arguments), delay);
-            };
-        }
-
-        // 实时保存编辑内容（通用方法，支持所有editable元素）
-        function saveEditableContent(el) {
-            const key = el.getAttribute('data-key');
-            if (key) {
-                localStorage.setItem(key, el.textContent.trim());
-                console.log(`💾 自动保存 [${key}]：${el.textContent.trim()}`);
-            }
-        }
-
-        // 给页面已有的editable元素绑定保存事件
-        document.querySelectorAll('.editable').forEach(el => {
-            el.addEventListener('input', debounce(function() {
-                saveEditableContent(this);
-            }, 500));
-        });
-        
-        // 双击空白处切换编辑模式（编辑时所有跳转失效）
-        document.addEventListener('dblclick', debounce(function(e) {
-            if (e.target.classList.contains('editable') || e.target.tagName === 'BUTTON') return;
-            if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
-            
-            isEditMode = !isEditMode;
-            const editableElements = document.querySelectorAll('.editable');
-            
-            if (isEditMode) {
-                // 进入编辑模式：禁用所有跳转
-                document.body.classList.add('edit-mode-active');
-                editModeBar.classList.add('show');
-                exportBtn.classList.add('show');
-                editableElements.forEach(el => {
-                    el.contentEditable = true;
-                    el.setAttribute('spellcheck', 'false');
-                });
-
-                // 禁用所有链接、卡片、图片点击
-                document.querySelectorAll('a, .work-card, img, [onclick]').forEach(el => {
-                    el.style.pointerEvents = 'none';
-                });
-
-                // 仅允许editable元素点击
-                document.querySelectorAll('.editable').forEach(el => {
-                    el.style.pointerEvents = 'auto';
-                });
-
-                alert('📝 编辑模式已开启，所有跳转已禁用，点击文字即可修改！');
-            } else {
-                // 退出编辑模式：恢复所有跳转
-                document.body.classList.remove('edit-mode-active');
-                editModeBar.classList.remove('show');
-                exportBtn.classList.remove('show');
-                editableElements.forEach(el => {
-                    el.contentEditable = false;
-                    el.removeAttribute('spellcheck');
-                    saveEditableContent(el);
-                });
-
-                // 恢复所有点击
-                document.querySelectorAll('a, .work-card, img, [onclick]').forEach(el => {
-                    el.style.pointerEvents = '';
-                });
-
-                alert('✅ 编辑模式已关闭，所有修改已自动保存！');
-            }
-        }, 200));
-
-        // 导出网站文件（核心修复：保证下载正常，完全保留原有代码结构）
-        function exportWebsite() {
-            try {
-                // 强制保存所有修改
-                document.querySelectorAll('.editable').forEach(el => saveEditableContent(el));
-                
-                // 克隆整个文档结构，保证100%复刻当前状态
-                const cloneDoc = document.cloneNode(true);
-                
-                // 仅移除临时的编辑模式状态（不删除任何功能代码）
-                cloneDoc.body.classList.remove('edit-mode-active');
-                const editBar = cloneDoc.getElementById('editModeBar');
-                if (editBar) editBar.classList.remove('show');
-                const expBtn = cloneDoc.getElementById('exportBtn');
-                if (expBtn) expBtn.classList.remove('show');
-                
-                // 获取完整的HTML内容
-                let htmlContent = '<!DOCTYPE html>\n' + cloneDoc.documentElement.outerHTML;
-                
-                // 修复DOCTYPE重复问题
-                htmlContent = htmlContent.replace(/<!DOCTYPE html>\n<!DOCTYPE html>/i, '<!DOCTYPE html>');
-                
-                // 创建Blob并触发下载
-                const blob = new Blob([htmlContent], { 
-                    type: 'text/html;charset=utf-8' 
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url; 
-                a.download = 'index.html'; // 文件名固定为index.html，方便替换原文件
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                
-                // 清理资源
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 1000);
-                
-                alert('✅ 导出成功！\n文件已准备好另存为，包含所有文字修改，保留全部原有功能');
-            } catch (err) {
-                alert(`❌ 导出失败：${err.message}`);
-                console.error('导出失败详情：', err);
-            }
-        }
-
-        // ================== 页面初始化（加载所有本地保存的内容） ==================
-        window.addEventListener('DOMContentLoaded', async () => {
-            console.log('🚀 页面开始初始化...');
-            
-            // 加载本地保存的编辑内容（页面已有元素）
-            const editableElements = document.querySelectorAll('.editable');
-            editableElements.forEach(el => {
-                const key = el.getAttribute('data-key');
-                const savedValue = localStorage.getItem(key);
-                if (savedValue) el.textContent = savedValue.trim();
-            });
-            
-            // 并行加载作品（产品卡片）
-            const loadPromises = workCategories.map(category => loadCategoryWorks(category));
-            await Promise.all(loadPromises);
-            
-            // 兜底加载图片
-            loadVisibleImages();
-            console.log('✅ 页面初始化完成！所有产品描述已加载本地保存内容');
-        });
-
-        // 全局性能优化
-        document.addEventListener('dragstart', e => {
-            if (e.target.tagName === 'IMG') e.preventDefault();
-        });
-        document.body.style.scrollBehavior = 'smooth';
+    // 空函数占位（避免导出按钮点击报错）
+    function exportWebsite() {}
     </script>
-// 全局性能优化
-document.addEventListener('dragstart', e =&gt; {
-    if (e.target.tagName === 'IMG') e.preventDefault();
+<script>
+window.onload = function(){
+    // 品牌20个
+    var brandList = ["brand1-1","brand1-2","brand1-3","brand1-4","brand1-5","brand2-1","brand2-2","brand2-3","brand3-1","brand3-2","brand3-3","brand3-4","brand4-1","brand4-2","brand5-1","brand5-2","brand5-3","brand5-4","brand5-5","brand5-6"];
+    // 空间16个
+    var spaceList = ["space1-1","space1-2","space1-3","space1-4","space1-5","space1-6","space2-1","space2-2","space2-3","space3-1","space3-2","space4-1","space4-2","space5-1","space5-2","space5-3"];
+    // 包装17个
+    var packList = ["package1-1","package1-2","package1-3","package1-4","package1-5","package2-1","package2-2","package2-3","package2-4","package3-1","package3-2","package3-3","package3-4","package3-5","package4-1","package4-2","package4-3"];
+    // 平面7个
+    var printList = ["print1-1","print1-2","print1-3","print2-1","print2-2","print3-1","print3-2"];
+
+    function show(boxId, folder, arr){
+        var box = document.getElementById(boxId);
+        if(!box) return;
+        box.innerHTML = "";
+        for(var i=0;i<arr.length;i++){
+            var img = new Image();
+            img.src = "images/"+folder+"/"+arr[i]+".jpg";
+            img.style.width = "100%";
+            box.appendChild(img);
+        }
+    }
+
+    show("brandList","pinpai",brandList);
+    show("spaceList","kongjian",spaceList);
+    show("packageList","baozhuang",packList);
+    show("printList","pingmian",printList);
+}
+</script>
+<script>
+// 针对你网站源码 100% 精准生效：点哪里进 → 返回就停在哪里
+document.addEventListener('DOMContentLoaded', function() {
+
+  // 绑定你网站【真正点击的作品图片】保存滚动位置
+  document.querySelectorAll('.work-img').forEach(img => {
+    img.onclick = function() {
+      sessionStorage.setItem('MY_SCROLL', window.scrollY);
+    };
+  });
+
+  // 返回时强制恢复（延迟确保页面完全渲染）
+  const pos = sessionStorage.getItem('MY_SCROLL');
+  if (pos) {
+    setTimeout(() => {
+      window.scrollTo(0, parseInt(pos));
+      sessionStorage.removeItem('MY_SCROLL');
+    }, 50);
+  }
+
 });
-document.body.style.scrollBehavior = 'smooth';
+</script><script>
+<script>
+// 你实测成功过的原版 · 只做定位 · 不搞多余操作
+document.addEventListener('DOMContentLoaded', function() {
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    }
 
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('work-img')) {
+            localStorage.setItem('SCROLL_FIX', window.scrollY);
+        }
+    }, true);
 
-<!-- 导出按钮（绝对可用版） -->
-
-
-
-
-
-<div id="agent"></div></body><div id="ai-assist-root-bangs"></div><div id="shadow-root-ai-zhishiku"></div><div id="ai-assist-root-new"></div></html>
+    window.addEventListener('load', function() {
+        let pos = localStorage.getItem('SCROLL_FIX');
+        if (pos) {
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(pos));
+                localStorage.removeItem('SCROLL_FIX');
+            }, 50);
+        }
+    });
+});
+</script>
+</body>
+</html>
