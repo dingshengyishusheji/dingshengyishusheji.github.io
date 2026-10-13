@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杭州鼎笙艺术设计 | 陈志坚 独立设计师</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 编辑模式提示条 - 永久隐藏 */
+        .edit-mode-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffc107;
+            color: #000;
+            text-align: center;
+            padding: 8px;
+            font-size: 14px;
+            z-index: 9999;
+            display: none !important;
+        }
+        .edit-mode-bar.show {
+            display: none !important;
+        }
+
+        /* 导出按钮 - 永久隐藏 */
+        .export-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 9998;
+            display: none !important;
+        }
+        .export-btn.show {
+            display: none !important;
+        }
+        .export-btn:hover {
+            background-color: #0052a3;
+        }
+
+        /* 可编辑元素样式 - 移除编辑相关交互 */
+        .editable {
+            transition: all 0.2s ease;
+            cursor: default !important;
+            position: relative;
+            z-index: 10;
+        }
+        .editable:hover {
+            outline: none !important;
+        }
+        .editable:focus {
+            outline: none !important;
+            background-color: transparent !important;
+        }
+
+        /* 导航栏 */
+        nav {
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        /* Banner自动轮播样式 */
+        .banner {
+            position: relative;
+            min-height: 334px;
+            padding: 100px 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .banner-slides {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #fff;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .banner-slide.active {
+            opacity: 1;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Banner主标题 */
+        .banner h1 {
+            font-size: 48px;
+            margin-bottom: 24px;
+            color: #222;
+            font-weight: 600;
+            text-shadow: 
+                0 0 10px #fff,
+                0 0 10px #fff,
+                0 0 10px #fff,
+                0 0 10px #fff,
+                0 0 10px #fff;
+        }
+
+        /* Banner副标题 */
+        .banner p {
+            font-size: 20px;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 
+                0 0 8px #fff,
+                0 0 16px #fff,
+                0 0 24px rgba(255,255,255,0.95),
+                0 0 32px rgba(255,255,255,0.9);
+        }
+
+        /* 分类导航区域 */
+        .category-nav {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+            scroll-margin-top: 80px;
+        }
+        .category-nav a.editable {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .category-nav a.editable:hover {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        /* 作品展示区 */
+        .section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        /* 类目标题 */
+        .category-title {
+            font-size: 24px;
+            margin: 60px 0 32px;
+            color: #333;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+            scroll-margin-top: 80px;
+        }
+
+        /* 作品瀑布流网格 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .work-card {
+            background-color: transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .work-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        /* 作品卡片图片 */
+        .work-img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .work-img.loaded {
+            opacity: 1;
+        }
+
+        /* 作品文字区 */
+        .work-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px 12px;
+            background-color: transparent;
+            pointer-events: none;
+        }
+
+        /* 编辑模式下，文字区域可点击 - 屏蔽 */
+        .edit-mode-active .work-info {
+            pointer-events: none !important;
+        }
+
+        /* 作品描述 */
+        .work-desc {
+            font-size: 11.8px;
+            font-weight: normal;
+            color: #999999;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* 关于我 */
+        .about-section {
+            background-color: #fff;
+            padding: 80px 20px;
+            margin-top: 80px;
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-container h2 {
+            font-size: 32px;
+            margin-bottom: 32px;
+            color: #222;
+            font-weight: 600;
+        }
+
+        .about-text {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            white-space: pre-line;
+        }
+
+        /* 联系栏 */
+        .contact-box {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 32px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .contact-item {
+            font-size: 16px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 32px 20px;
+            margin-top: 80px;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* 手机端响应式 */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 20px;
+            }
+            .banner h1 {
+                font-size: 32px;
+            }
+            .banner p {
+                font-size: 16px;
+            }
+            .works-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+            .work-img {
+                height: 145px;
+            }
+            .work-desc {
+                font-size: 10.1px;
+            }
+            .contact-box {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .category-nav {
+                gap: 30px;
+            }
+            .category-nav a.editable {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 编辑模式提示条 - 保留结构但永久隐藏 -->
+    <div class="edit-mode-bar" id="editModeBar">
+        ✏️ 编辑模式已开启 | 点击文字直接修改 | 双击空白处退出并自动保存
+    </div>
+
+    <!-- 导出按钮 - 保留结构但永久隐藏 -->
+    <button class="export-btn" id="exportBtn" onclick="exportWebsite()">📥 导出并替换原文件</button>
+
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo editable" data-key="logo">杭州鼎笙艺术设计</a>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#works">作品</a>
+                <a href="#about">关于我</a>
+                <a href="#contact">联系我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner自动轮播 -->
+    <section id="home" class="banner">
+        <div class="banner-slides">
+            <div class="banner-slide active" style="background-image: url('images/banner.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-1.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-2.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-3.jpg')"></div>
+            <div class="banner-slide" style="background-image: url('images/banner-4.jpg')"></div>
+        </div>
+        <div class="banner-content">
+            <h1 class="editable" data-key="banner-title">鼎承匠心 · 笙绘美好</h1>
+            <p class="editable" data-key="banner-subtitle">陈志坚设计工作室 | CHEN ZHIJIAN DESIGN STUDIO</p>
+        </div>
+    </section>
+
+    <!-- 作品展示区 -->
+    <section id="works" class="section">
+        <div id="category-nav-section" class="category-nav">
+            <a class="editable" data-key="nav-package" data-target="#category-package">包装/礼盒设计</a>
+            <a class="editable" data-key="nav-space" data-target="#category-space">空间/展厅设计</a>
+            <a class="editable" data-key="nav-brand" data-target="#category-brand">品牌/LOGO/VI设计</a>
+            <a class="editable" data-key="nav-print" data-target="#category-print">平面/广告设计</a>
+        </div>
+
+        <!-- 1. 品牌/LOGO/VI设计 -->
+        <h3 id="category-brand" class="category-title editable" data-key="category-brand">品牌/LOGO/VI设计</h3>
+        <div class="works-grid" id="brand-works-grid"></div>
+
+        <!-- 2. 空间/展厅设计 -->
+        <h3 id="category-space" class="category-title editable" data-key="category-space">空间/展厅设计</h3>
+        <div class="works-grid" id="space-works-grid"></div>
+
+        <!-- 3. 包装/礼盒设计 -->
+        <h3 id="category-package" class="category-title editable" data-key="category-package">包装/礼盒设计</h3>
+        <div class="works-grid" id="package-works-grid"></div>
+
+        <!-- 4. 平面/广告设计 -->
+        <h3 id="category-print" class="category-title editable" data-key="category-print">平面/广告设计</h3>
+        <div class="works-grid" id="print-works-grid"></div>
+    </section>
+
+    <!-- 关于我+联系我 -->
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <h2 class="editable" data-key="about-title">关于我</h2>
+            <div class="about-text editable" data-key="about-text">20+年设计行业经验，专注商业空间与品牌视觉融合设计。
+擅长从品牌战略出发，打造兼具美学与商业价值的设计作品。
+服务过100+企业客户，涵盖品牌、空间、包装等多个领域。</div>
+
+            <div id="contact" class="contact-box">
+                <div class="contact-item editable" data-key="contact-phone">
+                    <span>📱</span>
+                    <span>微信/电话：186 0651 0351</span>
+                </div>
+                <div class="contact-item editable" data-key="contact-email">
+                    <span>📧</span>
+                    <span>邮箱：309699919@qq.com</span>
+                </div>
+                <div class="contact-item editable" data-key="contact-address">
+                    <span>📍</span>
+                    <span>地址：浙江杭州西湖区翠苑创立方B座507-2室</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p class="editable" data-key="footer">© 2026 杭州鼎笙艺术设计 版权所有</p>
+    </footer>
+
+    <script>
+    // 注入siteCache缓存数据
+    const siteCache = {
+        "work-brand14-title": "品牌全案设计14",
+        "DETAIL_images/kongjian/space17_title": "空间设计",
+        "banner-subtitle": "陈志坚设计工作室 | CHEN ZHIJIAN DESIGN STUDIO",
+        "contact-address": "📍\n                    地址：浙江杭州西湖区翠苑创立方B座507-2室",
+        "work-brand20-title": "品牌全案设计20",
+        "wx": "📧 309699919@qq.com",
+        "work-space1-title": "空间设计1",
+        "DETAIL_images/kongjian/space8_desc": "串东家连锁烧烤店",
+        "DETAIL_images/baozhuang/package5_title": "包装设计",
+        "work-brand4-desc": "品牌全案设计",
+        "DETAIL_images/kongjian/space14_title": "空间设计",
+        "work-space13-desc": "商业空间设计",
+        "DETAIL_images/pinpai/brand11_desc": "悦己 . 三养空间",
+        "detail-images/pingmian/print1-caption-4": "图片5描述",
+        "DETAIL_images/pinpai/brand14_title": "品牌logo及应用",
+        "DETAIL_images/pinpai/brand4_title": "茶叶品牌",
+        "DETAIL_images/baozhuang/package8_sub": "古井贡限量版包装设计",
+        "DETAIL_images/pinpai/brand18_desc": "除锈科技",
+        "DETAIL_images/pingmian/print10_title": "平面设计",
+        "DETAIL_images/kongjian/space1_title": "空间设计",
+        "DETAIL_images/baozhuang/package14_title": "包装设计 ",
+        "DETAIL_images/baozhuang/package5_desc": "法国他色服装包装设计",
+        "DETAIL_images/pinpai/brand4_desc": "不淄居logo及应用",
+        "work-brand15-desc": "品牌全案设计",
+        "DETAIL_images/baozhuang/package11_desc": "陈太吉限量版",
+        "work-space9-desc": "商业空间设计",
+        "work-desc-package-3": "冰酒包装设计",
+        "work-space17-title": "空间设计17",
+        "banner1": "鼎承匠心 · 笙绘美好",
+        "work-desc-brand-4": "不淄居茶叶logo",
+        "work-space10-title": "空间设计10",
+        "work-space6-desc": "商业空间设计",
+        "work-brand11-desc": "品牌全案设计",
+        "nav-print": "pingmian",
+        "work-desc-print-8": "罗马骑士红酒广告",
+        "work-print8-desc": "商业平面设计",
+        "caption-images/baozhuang/package8-1": "打开效果",
+        "DETAIL_images/kongjian/space11_title": "空间设计",
+        "work-brand2-desc": "品牌全案设计",
+        "DETAIL_PAGE_images/pinpai/brand8_title": "品牌LOGO设计",
+        "DETAIL_images/pinpai/brand20_title": "品牌logo及VI",
+        "DETAIL_images/pinpai/brand15_desc": "节目品牌",
+        "work-brand6-title": "品牌全案设计6",
+        "work-space6-title": "空间设计6",
+        "DETAIL_images/pinpai/brand7_title": "品牌logo及应用",
+        "work-desc-brand-13": "沙小匠沙县小吃logo",
+        "DETAIL_images/baozhuang/package1_desc": "美国安迪斯红酒包装设计",
+        "work-desc-brand-14": "广西巨门生态logo",
+        "DETAIL_images/pinpai/brand2_desc": "饺子范面食",
+        "work-brand1-desc": "品牌全案设计",
+        "work-brand8-desc": "品牌全案设计",
+        "work-package3-title": "包装设计3",
+        "work-desc-brand-1": "她色国际服装品牌logo",
+        "DETAIL_images/baozhuang/package15_desc": "斗将中国风",
+        "work-space9-title": "空间设计9",
+        "work-package18-desc": "产品包装设计",
+        "work-space8-desc": "商业空间设计",
+        "work-desc-package-5": "她色服装包装设计",
+        "work-package10-title": "包装设计10",
+        "work-brand4-title": "品牌全案设计4",
+        "DETAIL_PAGE_images/pinpai/brand20_title": "品牌VI设计\n",
+        "DETAIL_images/kongjian/space17_desc": "集美司生活馆空间",
+        "work-package13-desc": "产品包装设计",
+        "DETAIL_images/kongjian/space16_desc": "杭州云竹茶庄",
+        "work-space10-desc": "商业空间设计",
+        "caption-3": "图片4描述",
+        "DETAIL_images/baozhuang/package13_desc": "系列包装",
+        "DETAIL_images/pingmian/print8_desc": "意大利罗马骑士糖酒会物料",
+        "category-brand": "品牌/LOGO/VI设计",
+        "DETAIL_images/pinpai/brand13_desc": "沙小匠沙县小吃logo",
+        "banner-title": "鼎承匠心 · 笙绘美好",
+        "caption-6": "图片7描述",
+        "DETAIL_images/baozhuang/package12_desc": "赵政久尊贵版",
+        "DETAIL_images/pinpai/brand8_desc": "超牛儿童品牌",
+        "DETAIL_images/kongjian/space13_desc": "杭州T-CAR园区改造",
+        "work-desc-package-2": "意大利红酒包装设计",
+        "DETAIL_images/kongjian/space18_title": "图腾柱设计",
+        "work-space12-title": "空间设计12",
+        "section-title": "精选作品",
+        "DETAIL_images/pinpai/brand9_title": "品牌logo及应用",
+        "work-space12-desc": "商业空间设计",
+        "work-desc-brand-15": "好歌30年logo",
+        "DETAIL_images/pinpai/brand15_title": "品牌logo及应用",
+        "detail-images/baozhuang/package2-caption-7": "图片8描述",
+        "work-desc-brand-8": "超牛儿童品牌logo",
+        "work-desc-space-12": "杭州临平公安局服务大厅设计",
+        "work-brand14-desc": "品牌全案设计",
+        "caption-images/baozhuang/package12-2": "细节展示",
+        "DETAIL_images/pinpai/brand10_desc": "OL圈连锁店",
+        "work-space3-title": "空间设计3",
+        "DETAIL_images/baozhuang/package15_title": "包装设计",
+        "DETAIL_images/kongjian/space16_title": "建筑、空间设计",
+        "DETAIL_images/pingmian/print11_title": "平面设计",
+        "work-brand7-desc": "品牌全案设计",
+        "work-desc-space-2": "吉林法式文化商业街设计",
+        "DETAIL_images/pinpai/brand1_title": "品牌logo及应用",
+        "DETAIL_images/pinpai/brand6_title": "品牌logo及应用",
+        "work-package11-desc": "产品包装设计",
+        "work-brand3-title": "品牌全案设计3",
+        "caption-images/pinpai/brand3-2": "品牌图形",
+        "work-desc-package-13": "珍览白酒包装设计",
+        "work-print9-title": "平面设计9",
+        "detail-images/baozhuang/package2-caption-4": "图片5描述",
+        "work-package14-title": "包装设计14",
+        "work-package1-desc": "产品包装设计",
+        "work-space15-title": "空间设计15",
+        "DETAIL_images/baozhuang/package1_title": "包装设计",
+        "DETAIL_images/pingmian/print10_desc": "楼宇广告",
+        "DETAIL_images/pinpai/brand5_title": "品牌logo及应用",
+        "work-desc-brand-17": "功夫珍蚝logo",
+        "work-package10-desc": "产品包装设计",
+        "category-space": "空间/展厅设计",
+        "DETAIL_images/kongjian/space9_desc": "鼎尚食疗店中店",
+        "DETAIL_images/pinpai/brand16_title": "品牌logo及应用",
+        "work-space11-desc": "商业空间设计",
+        "DETAIL_images/pinpai/brand12_title": "品牌logo及应用",
+        "caption-images/pingmian/print3-4": "图片5描述",
+        "DETAIL_images/kongjian/space18_desc": "连云港化工产业园图腾柱",
+        "work-package5-desc": "产品包装设计",
+        "DETAIL_images/pinpai/brand19_desc": "律师行",
+        "work-package8-desc": "产品包装设计",
+        "work-print10-title": "平面设计10",
+        "work-space14-title": "空间设计14",
+        "work-desc-space-11": "沙小匠沙县小吃连锁店设计",
+        "work-desc-package-8": "古井贡酒包装设计",
+        "work-package14-desc": "产品包装设计",
+        "work-brand12-title": "品牌全案设计12",
+        "work-desc-space-17": "集美司美学生活馆设计",
+        "work-space13-title": "空间设计13",
+        "work-desc-brand-3": "法国黑公鸡红酒logo",
+        "caption-images/pinpai/brand2-2": "品牌手册",
+        "work-desc-print-9": "罗马骑士楼宇广告",
+        "caption-images/baozhuang/package12-0": "礼盒正面",
+        "work-package3-desc": "产品包装设计",
+        "detail_workDesc": "这里可以填写作品介绍、设计说明、项目背景等文字内容。",
+        "work-print11-desc": "商业平面设计",
+        "work-brand7-title": "品牌全案设计7",
+        "footer": "© 2026 杭州鼎笙艺术设计 版权所有",
+        "DETAIL_PAGE_images/pinpai/brand20_sub": "罗马骑士品牌VI设计",
+        "work-package12-title": "包装设计12",
+        "DETAIL_images/pinpai/brand19_title": "品牌logo及应用",
+        "work-desc-brand-6": "新月香饼家logo",
+        "work-print8-title": "平面设计8",
+        "DETAIL_images/pinpai/brand3_desc": "法国黑公鸡红酒",
+        "work-print3-title": "平面设计3",
+        "caption-images/pingmian/print3-0": "主视觉海报",
+        "work-desc-space-15": "青山控股数字大厅设计",
+        "detail-images/baozhuang/package2-caption-8": "图片9描述",
+        "work-space15-desc": "商业空间设计",
+        "work-desc-brand-20": "罗马骑士品牌VI",
+        "detail-images/baozhuang/package2-caption-2": "细节展示",
+        "DETAIL_images/pinpai/brand14_desc": "广西巨门生态农牧科技",
+        "caption-images/pingmian/print3-3": "图片4描述",
+        "DETAIL_images/pinpai/brand12_desc": "国薇生活空间",
+        "DETAIL_images/baozhuang/package13_sub": "副标题",
+        "DETAIL_images/pingmian/print2_title": "平面设计",
+        "work-package4-desc": "产品包装设计",
+        "caption-images/pinpai/brand2-0": "LOGO设计",
+        "work-brand16-title": "品牌全案设计16",
+        "addr": "📍 浙江省杭州市西湖区翠苑创立方B座507-2室",
+        "DETAIL_images/baozhuang/package10_title": "白酒包装",
+        "work-brand5-title": "品牌全案设计5",
+        "caption-images/pingmian/print3-1": "系列海报",
+        "DETAIL_images/pingmian/print2_desc": "品牌基础应用",
+        "work-desc-package-17": "金马礼盒设计",
+        "work-desc-print-10": "商业平面设计",
+        "caption-images/pinpai/brand3-4": "图片5描述",
+        "category-package": "包装/礼盒设计",
+        "DETAIL_images/kongjian/space12_desc": "临平公安综合服务大厅",
+        "cat3": "包装/礼盒设计",
+        "work-brand18-title": "品牌全案设计18",
+        "DETAIL_images/baozhuang/package7_desc": "意大利罗马骑士红酒包装设计",
+        "SAVE_images/baozhuang/package8_title": "白酒包装",
+        "work-desc-brand-19": "京罚顾问logo",
+        "work-space11-title": "空间设计11",
+        "DETAIL_images/baozhuang/package13_title": "珍览酱酒",
+        "caption-images/pingmian/print3-7": "图片8描述",
+        "SAVE_images/baozhuang/package2_desc": "意大利岩山/黑公鸡葡萄酒",
+        "DETAIL_images/pingmian/print11_desc": "意大利红酒推介册",
+        "DETAIL_images/pingmian/print8_title": "平面设计",
+        "detail-images/baozhuang/package2-caption-5": "图片6描述",
+        "DETAIL_images/pinpai/brand10_title": "品牌logo及应用",
+        "work-desc-space-5": "杭州汇隆控股建筑外观改造设计",
+        "DETAIL_images/baozhuang/package3_title": "包装设计",
+        "work-desc-space-14": "杭州西湖公安局指挥室设计",
+        "work-brand2-title": "品牌全案设计2",
+        "about-text": "20+年设计行业经验，专注商业空间与品牌视觉融合设计。\n擅长从品牌战略出发，打造兼具美学与商业价值的设计作品。\n服务过100+企业客户，涵盖品牌、空间、包装等多个领域。",
+        "DETAIL_images/baozhuang/package14_desc": "茅台镇酒包装",
+        "work-print2-title": "平面设计2",
+        "work-desc-brand-10": "OL圈连锁专卖logo",
+        "work-desc-package-1": "美国安迪斯红酒包装设计",
+        "DETAIL_images/baozhuang/package7_title": "包装设计",
+        "d_logo": "杭州鼎笙艺术设计",
+        "DETAIL_images/pingmian/print3_desc": "电商海报",
+        "DETAIL_images/kongjian/space6_desc": "杭州临平公安局办公室",
+        "DETAIL_images/pinpai/brand2_title": "品牌logo及应用",
+        "work-package2-desc": "产品包装设计",
+        "work-desc-space-10": "酩翠庄红酒庄设计",
+        "work-desc-brand-7": "清梵康养品牌logo",
+        "work-package13-title": "包装设计13",
+        "work-desc-space-18": "园区图腾设计",
+        "DETAIL_images/baozhuang/package18_desc": "韩国京畿道米酒包装 ",
+        "work-space14-desc": "商业空间设计",
+        "DETAIL_images/pinpai/brand13_title": "品牌logo及应用",
+        "work-space17-desc": "商业空间设计",
+        "caption-images/baozhuang/package12-1": "打开效果",
+        "work-desc-space-6": "杭州临平公安局办公室设计",
+        "work-desc-package-14": "镇酒白酒包装设计",
+        "DETAIL_images/pinpai/brand17_desc": "生鲜水产",
+        "work-brand19-desc": "品牌全案设计",
+        "detail-images/baozhuang/package2-caption-6": "图片7描述",
+        "DETAIL_images/baozhuang/package10_desc": "酱小伙包装设计",
+        "work-package15-title": "包装设计15",
+        "work-space16-desc": "商业空间设计",
+        "DETAIL_images/kongjian/space5_desc": "杭州汇隆控股建筑外立面改造",
+        "work-desc-brand-11": "悦己康养logo",
+        "DETAIL_images/pinpai/brand20_desc": "意大利罗马骑士",
+        "DETAIL_images/kongjian/space10_desc": "酩翠庄红酒庄",
+        "DETAIL_images/pinpai/brand17_title": "品牌logo及应用",
+        "cat-package": "baozhuang",
+        "detail-subtitle": "主视觉海报",
+        "work-desc-brand-16": "牛股来了连锁店logo",
+        "DETAIL_images/pinpai/brand9_desc": "玲珑美伊",
+        "detail_detailLogo": "杭州鼎笙艺术设计",
+        "d_title": "品牌全案设计17",
+        "work-desc-package-9": "百年赖贵山包装设计",
+        "detail-title": "小仙梅酒书",
+        "DETAIL_images/pinpai/brand6_desc": "新月香饼家",
+        "work-brand9-desc": "品牌全案设计",
+        "DETAIL_images/pingmian/print9_desc": "意大利罗马骑士楼宇广告",
+        "work-desc-brand-2": "饺子范面点logo",
+        "work-print9-desc": "商业平面设计",
+        "DETAIL_images/baozhuang/package9_desc": "百年赖贵山包装设计",
+        "work-package12-desc": "产品包装设计",
+        "work-desc-package-12": "赵政久尊贵版包装设计",
+        "work-brand16-desc": "品牌全案设计",
+        "work-print11-title": "平面设计11"
+    };
+
+    // ================== 1. Banner轮播优化 ==================
+    const slides = document.querySelectorAll('.banner-slide');
+    let currentSlide = 0;
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+    const bannerContainer = document.querySelector('.banner');
+    let slideInterval = setInterval(nextSlide, 6000);
+    bannerContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+    bannerContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 6000));
+
+    // ================== 2. 分类导航跳转 ==================
+    document.querySelectorAll('.category-nav a.editable').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('data-target');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }
+        });
+    });
+
+    // ================== 3. 作品加载+懒加载（核心修复：给产品描述绑定保存逻辑） ==================
+    const workCategories = [
+        {
+            gridId: 'brand-works-grid',
+            folder: 'images/pinpai/',
+            prefix: 'brand',
+            titleTpl: '品牌全案设计{num}',
+            descTpl: '品牌全案设计',
+            captionsTpl: 'LOGO设计,VI应用,品牌手册'
+        },
+        {
+            gridId: 'space-works-grid',
+            folder: 'images/kongjian/',
+            prefix: 'space',
+            titleTpl: '空间设计{num}',
+            descTpl: '商业空间设计',
+            captionsTpl: '展厅全景,展示区,洽谈区'
+        },
+        {
+            gridId: 'package-works-grid',
+            folder: 'images/baozhuang/',
+            prefix: 'package',
+            titleTpl: '包装设计{num}',
+            descTpl: '产品包装设计',
+            captionsTpl: '礼盒正面,打开效果,细节展示'
+        },
+        {
+            gridId: 'print-works-grid',
+            folder: 'images/pingmian/',
+            prefix: 'print',
+            titleTpl: '平面设计{num}',
+            descTpl: '商业平面设计',
+            captionsTpl: '主视觉海报,系列海报,应用展示'
+        }
+    ];
+
+    // 图片存在性检测
+    function checkImageExists(src) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            const timer = setTimeout(() => resolve(false), 3000);
+            img.onload = () => {
+                clearTimeout(timer);
+                resolve(true);
+            };
+            img.onerror = () => {
+                clearTimeout(timer);
+                resolve(false);
+            };
+            img.src = src;
+        });
+    }
+
+    // 创建作品卡片（核心修复：给描述绑定data-key、实时保存、加载缓存）
+    async function createWorkCard(category, seriesNum) {
+        const seriesKey = `${category.prefix}${seriesNum}`;
+        const imgSrc = `${category.folder}${seriesKey}-1.jpg`;
+        const exists = await checkImageExists(imgSrc);
+        if (!exists) return null;
+
+        // 优先从siteCache获取标题和描述
+        let title = siteCache[`work-${seriesKey}-title`] || category.titleTpl.replace('{num}', seriesNum);
+        let desc = siteCache[`work-${seriesKey}-desc`] || category.descTpl.replace('{num}', seriesNum);
+        const captions = category.captionsTpl || '图片1,图片2,图片3';
+        const detailUrl = `detail.html?title=${encodeURIComponent(title)}&prefix=${encodeURIComponent(category.folder + seriesKey)}&captions=${encodeURIComponent(captions)}`;
+
+        const card = document.createElement('div');
+        card.className = 'work-card';
+
+        // 仅给图片绑定跳转
+        const img = document.createElement('img');
+        img.className = 'work-img lazy-load';
+        img.dataset.src = imgSrc;
+        img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+        img.dataset.detailUrl = detailUrl;
+        img.addEventListener('click', function(e) {
+            // 屏蔽编辑模式判断，直接允许跳转
+            e.preventDefault();
+            window.open(detailUrl, '_blank', 'noopener');
+        });
+
+        // 作品文字区（给描述绑定唯一data-key）
+        const info = document.createElement('div');
+        info.className = 'work-info';
+        const descEl = document.createElement('p');
+        descEl.className = 'work-desc editable';
+        // 给每个产品描述生成唯一的data-key，用于保存（仅保留结构，屏蔽编辑）
+        descEl.setAttribute('data-key', `work-desc-${category.prefix}-${seriesNum}`);
+        descEl.textContent = desc;
+        // 移除编辑相关事件绑定
+        descEl.contentEditable = false;
+
+        // 加载siteCache中的内容（优先级高于localStorage）
+        const cacheKey = `work-desc-${category.prefix}-${seriesNum}`;
+        if (siteCache[cacheKey]) {
+            descEl.textContent = siteCache[cacheKey];
+        } else {
+            // 兼容原有localStorage逻辑（如果有）
+            const savedDesc = localStorage.getItem(cacheKey);
+            if (savedDesc) descEl.textContent = savedDesc;
+        }
+
+        info.appendChild(descEl);
+        card.appendChild(img);
+        card.appendChild(info);
+
+        return card;
+    }
+
+    // 分批加载作品
+    async function loadCategoryWorks(category) {
+        const grid = document.getElementById(category.gridId);
+        let loadedCount = 0;
+        for (let i = 1; i <= 50; i++) {
+            const card = await createWorkCard(category, i);
+            if (card) {
+                grid.appendChild(card);
+                loadedCount++;
+            }
+        }
+        loadVisibleImages();
+    }
+
+    // 懒加载图片实现
+    function loadVisibleImages() {
+        const lazyImages = document.querySelectorAll('.work-img.lazy-load');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                        img.classList.remove('lazy-load');
+                    };
+                    observer.unobserve(img);
+                }
+            });
+        }, { rootMargin: '200px 0px' });
+
+        lazyImages.forEach(img => observer.observe(img));
+    }
+
+    // 初始化加载所有分类作品
+    window.addEventListener('DOMContentLoaded', async () => {
+        for (const category of workCategories) {
+            await loadCategoryWorks(category);
+        }
+    });
+
+    // 空函数占位（避免导出按钮点击报错）
+    function exportWebsite() {}
+    </script>
+<script>
+window.onload = function(){
+    // 品牌20个
+    var brandList = ["brand1-1","brand1-2","brand1-3","brand1-4","brand1-5","brand2-1","brand2-2","brand2-3","brand3-1","brand3-2","brand3-3","brand3-4","brand4-1","brand4-2","brand5-1","brand5-2","brand5-3","brand5-4","brand5-5","brand5-6"];
+    // 空间16个
+    var spaceList = ["space1-1","space1-2","space1-3","space1-4","space1-5","space1-6","space2-1","space2-2","space2-3","space3-1","space3-2","space4-1","space4-2","space5-1","space5-2","space5-3"];
+    // 包装17个
+    var packList = ["package1-1","package1-2","package1-3","package1-4","package1-5","package2-1","package2-2","package2-3","package2-4","package3-1","package3-2","package3-3","package3-4","package3-5","package4-1","package4-2","package4-3"];
+    // 平面7个
+    var printList = ["print1-1","print1-2","print1-3","print2-1","print2-2","print3-1","print3-2"];
+
+    function show(boxId, folder, arr){
+        var box = document.getElementById(boxId);
+        if(!box) return;
+        box.innerHTML = "";
+        for(var i=0;i<arr.length;i++){
+            var img = new Image();
+            img.src = "images/"+folder+"/"+arr[i]+".jpg";
+            img.style.width = "100%";
+            box.appendChild(img);
+        }
+    }
+
+    show("brandList","pinpai",brandList);
+    show("spaceList","kongjian",spaceList);
+    show("packageList","baozhuang",packList);
+    show("printList","pingmian",printList);
+}
+</script>
+<script>
+// 针对你网站源码 100% 精准生效：点哪里进 → 返回就停在哪里
+document.addEventListener('DOMContentLoaded', function() {
+
+  // 绑定你网站【真正点击的作品图片】保存滚动位置
+  document.querySelectorAll('.work-img').forEach(img => {
+    img.onclick = function() {
+      sessionStorage.setItem('MY_SCROLL', window.scrollY);
+    };
+  });
+
+  // 返回时强制恢复（延迟确保页面完全渲染）
+  const pos = sessionStorage.getItem('MY_SCROLL');
+  if (pos) {
+    setTimeout(() => {
+      window.scrollTo(0, parseInt(pos));
+      sessionStorage.removeItem('MY_SCROLL');
+    }, 50);
+  }
+
+});
+</script><script>
+<script>
+// 你实测成功过的原版 · 只做定位 · 不搞多余操作
+document.addEventListener('DOMContentLoaded', function() {
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('work-img')) {
+            localStorage.setItem('SCROLL_FIX', window.scrollY);
+        }
+    }, true);
+
+    window.addEventListener('load', function() {
+        let pos = localStorage.getItem('SCROLL_FIX');
+        if (pos) {
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(pos));
+                localStorage.removeItem('SCROLL_FIX');
+            }, 50);
+        }
+    });
+});
+</script>
+</body>
+</html>
